@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public float playerSpeed;
 
@@ -11,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     float horizontalInput, verticalInput;
 
     public Rigidbody rigidbody;
+
+    public Vector3 playerDirection;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,19 +24,19 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        rigidbody.AddForce(playerDirection * playerSpeed * Time.deltaTime, ForceMode.Force);
+    }
+
+    
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        //Debug.Log(context.ReadValue<Vector3>());
+        playerDirection = context.ReadValue<Vector3>();
+    }
+
+    public void OnNewaction(InputAction.CallbackContext context)
+    {
         
-    }
-
-    public void PlayerMovementInput()
-    {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-    }
-
-    public void MovingPlayer()
-    {
-        Vector3 moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        rigidbody.AddForce(moveDirection.normalized * playerSpeed, ForceMode.Force);
     }
 }
