@@ -15,10 +15,14 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     public Rigidbody rigidbody;
 
     public Vector3 playerDirection;
+
+    public Vector2 cameraRotation;
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        Cursor.visible = false;
+       Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -35,8 +39,9 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         playerDirection = context.ReadValue<Vector3>();
     }
 
-    public void OnNewaction(InputAction.CallbackContext context)
+    public void OnLook(InputAction.CallbackContext context)
     {
-        
-    }
+        Debug.Log(context.ReadValue<Vector2>());
+        cameraRotation = context.ReadValue<Vector2>();
+    }   
 }
