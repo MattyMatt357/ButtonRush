@@ -7,8 +7,8 @@ public class Buttons : ScriptableObject
 {
     public string ButtonName;
     public string ButtonDescription;
-    public int currentEnergy;
-    public int maxEnergy;
+    public float currentEnergy;
+    public float maxEnergy;
     public int currentAmmo;
     public int maxAmmo;
 }

@@ -77,37 +77,15 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""46ff6958-34e8-4e24-9a8e-0303b33a8161"",
-                    ""path"": ""OneModifier"",
+                    ""name"": """",
+                    ""id"": ""968d6bb9-1f9a-4540-99c6-0214d8523a5e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""UseButton1"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""ba586d66-e2be-4027-819e-536fa0ee9179"",
-                    ""path"": ""<Keyboard>/rightShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""UseButton1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""1600e6c0-ce9e-4a3b-8c13-a8731e88c442"",
-                    ""path"": ""<Keyboard>/numpad7"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""UseButton1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -121,37 +99,15 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""a3bc3ccf-5b88-44f3-a032-16da64ad8590"",
-                    ""path"": ""OneModifier"",
+                    ""name"": """",
+                    ""id"": ""977100c6-3c0f-4b96-8833-961307ec8a0b"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""UseButton2"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""3840566b-2092-4cf0-8b86-9aebfc1c445e"",
-                    ""path"": ""<Keyboard>/rightShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""UseButton2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""bfcd196b-8ae7-4f01-9e31-7319ad49c518"",
-                    ""path"": ""<Keyboard>/numpad8"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""UseButton2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -178,7 +134,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""modifier"",
                     ""id"": ""e7eedef9-9c21-44e4-9dbe-e0593efaf95d"",
-                    ""path"": ""<Keyboard>/rightShift"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -189,7 +145,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""binding"",
                     ""id"": ""62142081-0ea4-4b13-a426-9550606e56f2"",
-                    ""path"": ""<Keyboard>/numpad9"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -222,7 +178,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""modifier"",
                     ""id"": ""944c48aa-6ea0-448c-b2ac-5efb35c30242"",
-                    ""path"": ""<Keyboard>/rightShift"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -233,7 +189,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""binding"",
                     ""id"": ""642107fd-c7c3-453b-8f61-43fdd9145a12"",
-                    ""path"": ""<Keyboard>/numpad5"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

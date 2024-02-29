@@ -17,10 +17,16 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public Transform laserStartPoint;
     public LineRenderer lineRenderer;
 
+    public float laserRange;
+
+    public Buttons laserButton;
+
+    private float laserEnergyRate;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -46,13 +52,30 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void OnUseButton3(InputAction.CallbackContext context)
     {
-        Debug.Log("firingMyLaser!");
-        lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, laserStartPoint.position);
-        RaycastHit hit;
-        if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit))
+        if (context.performed && laserButton.currentEnergy >= 0f)
         {
-            lineRenderer.SetPosition(1, hit.point);
+            
+            lineRenderer.enabled = true;
+            Debug.Log("firingMyLaser!");
+
+            laserButton.currentEnergy -= Time.deltaTime * 20f;
+
+            lineRenderer.SetPosition(0, laserStartPoint.position);
+            RaycastHit hit;
+            if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
+            {
+                lineRenderer.SetPosition(1, hit.point);
+            }
+
+            else
+            {
+                lineRenderer.SetPosition(1, laserStartPoint.position + (laserStartPoint.forward * laserRange));
+            }
+        }
+
+        else if (context.canceled || laserButton.currentEnergy <= 0f)
+        {
+            lineRenderer.enabled = false;
         }
     }
 
@@ -61,5 +84,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         
     }
 
+    public IEnumerator LaserCooldown()
+    {
+        lineRenderer.enabled = false;
+        yield return new WaitForSeconds(1);
+        lineRenderer.enabled = true;
+    }
 
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonName: Laser
   ButtonDescription: Hold down this button to shoot big laser
-  currentEnergy: 0
+  currentEnergy: 292.91837
   maxEnergy: 500
   currentAmmo: 0
   maxAmmo: 0
