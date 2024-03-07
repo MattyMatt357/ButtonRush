@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public float playerSpeed;
 
-    public Transform orientation;
+    public Transform camera;
 
     float horizontalInput, verticalInput;
 
@@ -17,18 +17,31 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     public Vector3 playerDirection;
 
     public Vector2 cameraRotation;
+
+  
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         Cursor.visible = false;
        Cursor.lockState = CursorLockMode.Locked;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        rigidbody.AddForce(playerDirection * playerSpeed * Time.deltaTime, ForceMode.Force);
+        // playerDirection = inputActions.Player.Move.ReadValue<Vector3>();
+        //transform.rotation = Camera.main.transform.rotation;
+
+        
+
+        Vector3 playerMovement = new Vector3(playerDirection.x, 0.0f, playerDirection.z).normalized;
+        float forward = 1.5f;
+
+        playerMovement = (camera.forward * playerMovement.z * forward) + camera.right * playerMovement.x;
+        rigidbody.AddForce(playerMovement * playerSpeed * Time.deltaTime, ForceMode.Force);
+
     }
 
     
@@ -37,6 +50,11 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     {
         //Debug.Log(context.ReadValue<Vector3>());
         playerDirection = context.ReadValue<Vector3>();
+      //  playerDirection = camera.forward + context.ReadValue<Vector3>();
+       // playerDirection = playerDirection + camera.right;
+      //  playerDirection.Normalize();
+
+       // rigidbody.AddForce(new Vector3(playerDirection.x, 0, playerDirection.z) * playerSpeed, ForceMode.Force);
     }
 
     public void OnLook(InputAction.CallbackContext context)

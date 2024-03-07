@@ -2,11 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ButtonUiDisplay : MonoBehaviour
 {
     public Buttons laserButton;
     public Slider laserSlider;
+
+    public Buttons shieldButton;
+    public Slider shieldSlider;
+
+    public int rocketAmmo;
+    public int LanceAmmo;
+
+    public TextMeshProUGUI rocketAmmoDisplay;
+    public TextMeshProUGUI lanceAmmoDisplay;
+    public Buttons rocketLauncherButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,13 +27,21 @@ public class ButtonUiDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LaserBarDisplay();
+        
+        ButtonBarDisplay(laserSlider, laserButton);
+        ButtonBarDisplay(shieldSlider, shieldButton);
+        ButtonAmmoDisplay(rocketAmmoDisplay, rocketLauncherButton);
     }
 
-    public void LaserBarDisplay()
+    public void ButtonBarDisplay(Slider slider, Buttons button)
     {
-        laserSlider.minValue = 0;
-        laserSlider.value = laserButton.currentEnergy;
-        laserSlider.maxValue = laserButton.maxEnergy;
+        slider.minValue = 0;
+        slider.value = button.currentEnergy;
+        slider.maxValue = button.maxEnergy;
+    }
+
+    public void ButtonAmmoDisplay(TextMeshProUGUI ammoCount, Buttons button)
+    {
+        ammoCount.text = button.currentAmmo.ToString();
     }
 }
