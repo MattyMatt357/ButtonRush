@@ -16,5 +16,5 @@ MonoBehaviour:
   ButtonDescription: Rockets go boom
   currentEnergy: 0
   maxEnergy: 0
-  currentAmmo: 20
+  currentAmmo: 0
   maxAmmo: 25

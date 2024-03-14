@@ -132,7 +132,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""e7eedef9-9c21-44e4-9dbe-e0593efaf95d"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -143,7 +143,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""binding"",
+                    ""name"": ""Binding"",
                     ""id"": ""62142081-0ea4-4b13-a426-9550606e56f2"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",

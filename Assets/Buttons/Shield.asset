@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonName: Shield
   ButtonDescription: 
-  currentEnergy: 50
+  currentEnergy: 0
   maxEnergy: 50
   currentAmmo: 0
   maxAmmo: 0

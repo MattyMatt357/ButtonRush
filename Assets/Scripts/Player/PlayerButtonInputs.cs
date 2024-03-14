@@ -37,6 +37,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public float rocketForce= 10f;
 
+    public bool dealingLaserDamage = false;
+
+    public float laserCooldownTime;
+    public float shieldCooldownTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +63,40 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             shieldButton.currentEnergy -= 2 * Time.deltaTime;
             shieldButton.currentEnergy = Mathf.Clamp(shieldButton.currentEnergy, 0, shieldButton.maxEnergy);
         }
+
+        if (dealingLaserDamage) 
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
+            {
+                
+                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+
+
+                if (damageable != null)
+                {
+                    damageable.ReceiveDamage(14f * Time.deltaTime);
+                }
+
+            }
+        }
+
+         if (laserButton.currentEnergy <= 0f)
+        {
+            isLaserButtonHeld = false;
+            lineRenderer.enabled = false;
+            dealingLaserDamage = false;
+            lineRenderer.SetPosition(1, laserStartPoint.position);
+            StartCoroutine(LaserCooldown());
+        }
+
+         if (shieldButton.currentEnergy <= 0f)
+        {
+            StartCoroutine(ShieldCooldown());
+        }
+
+        rocketLauncherButton.currentAmmo = Mathf.Clamp(rocketLauncherButton.currentAmmo, 0, rocketLauncherButton.maxAmmo);
     }
 
     public void ButtonUse()
@@ -67,11 +106,12 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void OnUseButton1(InputAction.CallbackContext context)
     {
-        if (rocketLauncherButton.currentAmmo >= 0f)
+        if (rocketLauncherButton.currentAmmo > 0f)
         {
-            Instantiate(rocket, RocketLauncherRocketSpawn.transform.position, Quaternion.identity);
-            rocketPhysics.AddForce(RocketLauncherRocketSpawn.forward * rocketForce);
+           GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.transform.position, Quaternion.identity);
+            rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce);
             rocketLauncherButton.currentAmmo--;
+            
         }
     }
 
@@ -86,6 +126,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
         else if (context.canceled)
         {
+            isShieldButtonHeld = false;
             shield.SetActive(false);
         }
     }
@@ -104,9 +145,22 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
             lineRenderer.SetPosition(0, laserStartPoint.position);
             RaycastHit hit;
-            if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange, enemyLayer))
+            
+            if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
             {
                 lineRenderer.SetPosition(1, hit.point);
+
+               
+
+                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+
+
+                if (damageable != null) 
+                {
+                    //damageable.ReceiveDamage(2f * Time.deltaTime);
+                    dealingLaserDamage = true;
+                }
+
             }
 
             else
@@ -120,14 +174,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         {
             isLaserButtonHeld = false;
             lineRenderer.enabled = false;
+            dealingLaserDamage = false;
+            lineRenderer.SetPosition(1, laserStartPoint.position);
         }
 
-        if (laserButton.currentEnergy <= 0f && context.canceled)
-        {
-            isLaserButtonHeld = false;
-            lineRenderer.enabled = false;
-            StartCoroutine(LaserCooldown());
-        }
+       
     }
 
     public void OnUseButton4(InputAction.CallbackContext context)
@@ -138,9 +189,15 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public IEnumerator LaserCooldown()
     {
         lineRenderer.enabled = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(laserCooldownTime);
         lineRenderer.enabled = true;
         laserButton.currentEnergy = laserButton.maxEnergy;
+    }
+
+    public IEnumerator ShieldCooldown()
+    {
+        yield return new WaitForSeconds(shieldCooldownTime);
+        shieldButton.currentEnergy = shieldButton.maxEnergy;
     }
 
 }
