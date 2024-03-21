@@ -41,6 +41,8 @@ public class AmmoPickUp : MonoBehaviour
                     shieldButton.currentEnergy += 15;
                     break;
             }
+
+           // Destroy(gameObject);
         }
     }
 }

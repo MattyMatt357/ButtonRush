@@ -78,6 +78,10 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 {
                     damageable.ReceiveDamage(14f * Time.deltaTime);
                 }
+                else if (damageable == null)
+                {
+                    dealingLaserDamage = false;
+                }
 
             }
         }
@@ -106,10 +110,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void OnUseButton1(InputAction.CallbackContext context)
     {
-        if (rocketLauncherButton.currentAmmo > 0f)
+        
+
+        if (rocketLauncherButton.currentAmmo > 0f && context.performed)
         {
-           GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.transform.position, Quaternion.identity);
-            rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce);
+           GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.transform.position,
+               Quaternion.Euler(new Vector3(270,0,0)));
+            //rockets.transform.rotation = Quaternion.Euler(90, 0, 0);
+            rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce, ForceMode.Impulse);
             rocketLauncherButton.currentAmmo--;
             
         }
@@ -161,6 +169,8 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                     dealingLaserDamage = true;
                 }
 
+                
+
             }
 
             else
@@ -183,7 +193,10 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void OnUseButton4(InputAction.CallbackContext context)
     {
-        
+        if(context.performed)
+        {
+
+        }
     }
 
     public IEnumerator LaserCooldown()

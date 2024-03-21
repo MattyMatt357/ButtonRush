@@ -19,10 +19,12 @@ public class ButtonUiDisplay : MonoBehaviour
     public TextMeshProUGUI lanceAmmoDisplay;
     public Buttons rocketLauncherButton;
     public Buttons lanceChargeButton;
+    public TextMeshProUGUI playerHealthText;
+    public PlayerHealth playerHealth;
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     // Update is called once per frame
@@ -33,6 +35,7 @@ public class ButtonUiDisplay : MonoBehaviour
         ButtonBarDisplay(shieldSlider, shieldButton);
         ButtonAmmoDisplay(rocketAmmoDisplay, rocketLauncherButton);
         ButtonAmmoDisplay(lanceAmmoDisplay, lanceChargeButton);
+        playerHealthText.text = "Health: " + playerHealth.playerHealth.ToString("F0");
     }
 
     public void ButtonBarDisplay(Slider slider, Buttons button)
