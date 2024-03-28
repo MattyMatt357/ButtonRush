@@ -21,6 +21,13 @@ public class ButtonUiDisplay : MonoBehaviour
     public Buttons lanceChargeButton;
     public TextMeshProUGUI playerHealthText;
     public PlayerHealth playerHealth;
+
+    public Image crosshair;
+
+    public LayerMask enemyLayer;
+
+    public Transform camera;
+   // public Sprite crosshair;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +43,8 @@ public class ButtonUiDisplay : MonoBehaviour
         ButtonAmmoDisplay(rocketAmmoDisplay, rocketLauncherButton);
         ButtonAmmoDisplay(lanceAmmoDisplay, lanceChargeButton);
         playerHealthText.text = "Health: " + playerHealth.playerHealth.ToString("F0");
+        CrosshairDisplay();
+        
     }
 
     public void ButtonBarDisplay(Slider slider, Buttons button)
@@ -47,6 +56,33 @@ public class ButtonUiDisplay : MonoBehaviour
 
     public void ButtonAmmoDisplay(TextMeshProUGUI ammoCount, Buttons button)
     {
-        ammoCount.text = button.currentAmmo.ToString();
+        ammoCount.text = button.currentAmmo.ToString() + "/" + button.maxAmmo.ToString();
+    }
+
+    public void CrosshairDisplay()
+    {
+        
+
+        Ray crosshairAim = new Ray(camera.transform.position, camera.transform.forward);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(crosshairAim, out hit, 50, enemyLayer))
+        {
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null) 
+            {
+                crosshair.color = Color.red;
+            }
+
+            else if (damageable == null)
+            {
+                crosshair.color = Color.white;
+            }
+        }
+
+        
+
+        
     }
 }

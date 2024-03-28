@@ -6,14 +6,19 @@ public class RocketCollusion : MonoBehaviour
 {
     // Start is called before the first frame update
     public float explosionForce;
+
+    //public PlayerHealth player;
+
+    public LayerMask enemyLayer;
     void Start()
     {
-        
+       // player = FindObjectOfType<PlayerHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
+       // Physics.IgnoreCollision(player.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
         
     }
 
@@ -43,10 +48,10 @@ public class RocketCollusion : MonoBehaviour
             Destroy(gameObject);
         }
         
-        if (other.gameObject.CompareTag("Player"))
+        //if (other.gameObject.CompareTag("Player"))
         {
-            Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
-           Destroy(gameObject);
+            //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+          // Destroy(gameObject);
         }
 
 
@@ -63,14 +68,17 @@ public class RocketCollusion : MonoBehaviour
 
         float rocketDamage = 35f;
 
-        Collider[] colliders = Physics.OverlapSphere(rocketPoint, 20f);
+        Collider[] colliders = Physics.OverlapSphere(rocketPoint, 20f, enemyLayer);
         foreach (Collider collider in colliders) 
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
+           
 
             if (collider.GetComponent<Rigidbody>() != null)
             {              
-                collider.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, rocketPoint, 10f, 0.1f);
+                collider.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, rocketPoint, 10f, 0.5f, ForceMode.Impulse);
+
+                
             }
 
             if (damageable != null)

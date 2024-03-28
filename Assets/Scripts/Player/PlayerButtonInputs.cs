@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,10 +43,15 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public float laserCooldownTime;
     public float shieldCooldownTime;
 
+    public Transform rocketLauncher;
+    public Transform player;
+
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        shield.SetActive(false);
+        shield.GetComponent<Collider>().enabled = false;
     }
 
     // Update is called once per frame
@@ -56,7 +62,9 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             laserButton.currentEnergy -= laserEnergyRate * Time.deltaTime;
             laserButton.currentEnergy = Mathf.Clamp(laserButton.currentEnergy, 0, laserButton.maxEnergy);
             lineRenderer.SetPosition(0, laserStartPoint.position);
+
         }
+        
 
         if (isShieldButtonHeld)
         {
@@ -78,11 +86,16 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 {
                     damageable.ReceiveDamage(14f * Time.deltaTime);
                 }
-                else if (damageable == null)
+               // else if (damageable == null)
                 {
-                    dealingLaserDamage = false;
+                   // dealingLaserDamage = false;
                 }
 
+            }
+
+            else
+            {
+                dealingLaserDamage = false;
             }
         }
 
@@ -101,6 +114,17 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         }
 
         rocketLauncherButton.currentAmmo = Mathf.Clamp(rocketLauncherButton.currentAmmo, 0, rocketLauncherButton.maxAmmo);
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        { 
+            rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
+            laserButton.currentEnergy = laserButton.maxEnergy;
+            shieldButton.currentEnergy = shieldButton.maxEnergy;
+            lanceButton.currentAmmo = lanceButton.maxAmmo;
+        }
+
+        //rocketLauncher.transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+        //player.transform.rotation = 
     }
 
     public void ButtonUse()
@@ -114,9 +138,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
         if (rocketLauncherButton.currentAmmo > 0f && context.performed)
         {
-           GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.transform.position,
-               Quaternion.Euler(new Vector3(270,0,0)));
-            //rockets.transform.rotation = Quaternion.Euler(90, 0, 0);
+            
+           GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, rocket.transform.rotation);
+            //Debug.Log(RocketLauncherRocketSpawn.transform.rotation);
+            //Debug.Log("Rockets:" + rockets.transform.rotation);
+            //rockets.transform.rotation = transform.rotation;
             rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce, ForceMode.Impulse);
             rocketLauncherButton.currentAmmo--;
             
@@ -130,12 +156,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         {
             isShieldButtonHeld = true;
             shield.SetActive(true);
+            shield.GetComponent<Collider>().enabled = true;
         }
 
         else if (context.canceled)
         {
             isShieldButtonHeld = false;
             shield.SetActive(false);
+            shield.GetComponent<Collider>().enabled = false;
         }
     }
 
@@ -177,6 +205,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             {
                 
                 lineRenderer.SetPosition(1, laserStartPoint.position + (laserStartPoint.forward * laserRange));
+                dealingLaserDamage = false;
             }
         }
 

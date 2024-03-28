@@ -22,5 +22,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         enemyHealth -= damage;
         Debug.Log(enemyHealth);
+
+        if (enemyHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

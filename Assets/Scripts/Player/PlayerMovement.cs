@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     void Update()
     {
         // playerDirection = inputActions.Player.Move.ReadValue<Vector3>();
-        //transform.rotation = Camera.main.transform.rotation;
+        transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y,0);
 
         
 
