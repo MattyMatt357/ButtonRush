@@ -18,13 +18,19 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public Vector2 cameraRotation;
 
-  
+    public PauseMenu pauseMenu;
+
+    public delegate void DisplayPauseMenu();
+    public static event DisplayPauseMenu displayPauseMenu;
+
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         Cursor.visible = false;
        Cursor.lockState = CursorLockMode.Locked;
+        pauseMenu = FindObjectOfType<PauseMenu>();
         
     }
 
@@ -40,7 +46,7 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         float forward = 1.5f;
 
         playerMovement = (camera.forward * playerMovement.z * forward) + camera.right * playerMovement.x;
-        rigidbody.AddForce(playerMovement * playerSpeed * Time.deltaTime, ForceMode.Force);
+        rigidbody.AddForce(playerMovement * playerSpeed * 1.5f * Time.deltaTime, ForceMode.Acceleration);
 
     }
 
@@ -62,4 +68,12 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
        // Debug.Log(context.ReadValue<Vector2>());
         cameraRotation = context.ReadValue<Vector2>();
     }   
+
+    public void OnDisplayPauseMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            displayPauseMenu?.Invoke();
+        }
+    }
 }

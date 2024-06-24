@@ -5,11 +5,16 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     public float enemyHealth;
+    public LevellingSystem levellingSystem;
+    public int expAmount;
+    public Animator animator;
+    public GameObject playerAmmoPickUp;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = GetComponent<Animator>();
+        levellingSystem = FindObjectOfType<LevellingSystem>();
     }
 
     // Update is called once per frame
@@ -25,7 +30,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         if (enemyHealth <= 0)
         {
-            Destroy(gameObject);
+            EnemyDeath();
         }
+    }
+
+    public void EnemyDeath()
+    {
+        levellingSystem.AddExp(expAmount);
+        Instantiate(playerAmmoPickUp);
+        animator.SetTrigger("DeathTrigger");
+        //GetComponent<Animator>().Play("Death");
+       // Destroy(gameObject);
     }
 }

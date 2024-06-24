@@ -7,6 +7,7 @@ public class LevellingSystem : MonoBehaviour
     public int level;
     public int currentExp;
     public int maxExp;
+    public PlayerHealth playerHealth;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,15 +23,41 @@ public class LevellingSystem : MonoBehaviour
     public void LevelUp()
     {
         level++;
+        
+        playerHealth.maxPlayerHealth *= 1.15f;
+       // currentExp = 0;
+        maxExp = (int) (maxExp * 1.25);
+
+        /*if (currentExp > maxExp)
+        {
+           // int expRem = currentExp - maxExp;
+           // maxExp -= currentExp;
+           int overMaxExp = currentExp - maxExp;
+            currentExp = 0;
+            currentExp = overMaxExp;
+        } */
     }
 
     public void AddExp(int expAmount)
     {
         currentExp += expAmount;
        
-        if (currentExp >= maxExp)
+       while (currentExp >= maxExp)
         {
             currentExp -= maxExp;
+            LevelUp();
+        }
+    }
+
+    public void addXP(int xpToAdd)
+    {
+        currentExp += xpToAdd;
+        while (currentExp >= maxExp) 
+        { 
+            currentExp -= maxExp;
+            
+            LevelUp();
+            
         }
     }
 }
