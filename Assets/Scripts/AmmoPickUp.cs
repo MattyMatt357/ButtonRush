@@ -9,20 +9,22 @@ public class AmmoPickUp : MonoBehaviour
     public Buttons rocketLauncherButton;
     public Buttons shieldButton;
     public Buttons lanceChargeButton;
+    public PlayerHealth playerHealth;
     // Start is called before the first frame update
     void Start()
     {
-       
+       playerHealth = GetComponent<PlayerHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        randomButtonAmmoSelecter = Random.Range(0, 3);
+        
     }
 
     public void OnTriggerEnter(Collider other)
     {
+        randomButtonAmmoSelecter = Random.Range(0, 4);
         if (other.CompareTag("Player"))
         {
             switch (randomButtonAmmoSelecter)
@@ -40,9 +42,12 @@ public class AmmoPickUp : MonoBehaviour
                 case 3:
                     shieldButton.currentEnergy += 15;
                     break;
+                case 4:
+                    playerHealth.currentPlayerHealth += 15;
+                    break;
             }
 
-           // Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }

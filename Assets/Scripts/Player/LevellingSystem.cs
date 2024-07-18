@@ -8,6 +8,9 @@ public class LevellingSystem : MonoBehaviour
     public int currentExp;
     public int maxExp;
     public PlayerHealth playerHealth;
+
+    public delegate void PlayerLevelUpStats();
+    public static event PlayerLevelUpStats playerLevelUpStats;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +26,11 @@ public class LevellingSystem : MonoBehaviour
     public void LevelUp()
     {
         level++;
-        
-        playerHealth.maxPlayerHealth *= 1.15f;
+
+        playerLevelUpStats?.Invoke();
+
+        //playerHealth.maxPlayerHealth *= 1.15f;
+       // playerHealth.currentPlayerHealth = playerHealth.maxPlayerHealth;
        // currentExp = 0;
         maxExp = (int) (maxExp * 1.25);
 

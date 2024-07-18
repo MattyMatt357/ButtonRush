@@ -27,18 +27,24 @@ public class ButtonUiDisplay : MonoBehaviour
 
     public LayerMask enemyLayer;
 
-    public Transform camera;
+    public Camera camera;
 
     public LevellingSystem levellingSystem;
 
     public Slider expSlider;
     public TextMeshProUGUI playerLevelText;
+
+    public TextMeshProUGUI lanceDamageText;
+    public TextMeshProUGUI laserDamageText;
+    public TextMeshProUGUI rocketDamageText;
    // public Sprite crosshair;
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
         levellingSystem = FindObjectOfType<LevellingSystem>();
+        //camera = FindObjectOfType<Camera>();
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -54,7 +60,7 @@ public class ButtonUiDisplay : MonoBehaviour
         CrosshairDisplay();
         ShowPlayerLevel();
 
-
+        DisplayButtonDamage(laserButton, laserDamageText, "Laser Damage: ");
     }
 
     public void ButtonBarDisplay(Slider slider, Buttons button)
@@ -75,19 +81,20 @@ public class ButtonUiDisplay : MonoBehaviour
 
         Ray crosshairAim = new Ray(camera.transform.position, camera.transform.forward);
 
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
         RaycastHit hit;
 
-        if (Physics.Raycast(crosshairAim, out hit, 50, enemyLayer))
+        if (Physics.Raycast(ray, out hit, 250, enemyLayer))
         {
             IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-            if (damageable == null) 
-            {
-                crosshair.color = Color.white;
-            }
-
-            else if (damageable != null)
+            if (damageable != null) 
             {
                 crosshair.color = Color.red;
+            }
+            else 
+            {
+                crosshair.color = Color.white;
             }
         }
 
@@ -103,5 +110,10 @@ public class ButtonUiDisplay : MonoBehaviour
         expSlider.value = levellingSystem.currentExp;
         expSlider.maxValue = levellingSystem.maxExp;
 
+    }
+
+    public void DisplayButtonDamage(Buttons button, TextMeshProUGUI damageText, string buttonDamageText)
+    { 
+        damageText.text = buttonDamageText + button.buttonDamage.ToString();
     }
 }

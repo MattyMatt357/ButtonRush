@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CalculateDamage;
 
 public class RocketCollusion : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class RocketCollusion : MonoBehaviour
     public float explosionForce;
 
     //public PlayerHealth player;
-
+    public Buttons rocketButton;
     public LayerMask enemyLayer;
     void Start()
     {
@@ -66,9 +67,9 @@ public class RocketCollusion : MonoBehaviour
         int randomNumber = Random.Range(1, 100);
         int criticalChance = 77;
 
-        float rocketDamage = 35f;
+       // float rocketDamage = 35f;
 
-        Collider[] colliders = Physics.OverlapSphere(rocketPoint, 20f, enemyLayer);
+        Collider[] colliders = Physics.OverlapSphere(rocketPoint, 40f, enemyLayer);
         foreach (Collider collider in colliders) 
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
@@ -83,8 +84,9 @@ public class RocketCollusion : MonoBehaviour
 
             if (damageable != null)
             {
-
-                if (randomNumber <= criticalChance)
+                float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
+                damageable.ReceiveDamage(rocketCritDamage);
+                /* if (randomNumber <= criticalChance)
                 {
                     damageable.ReceiveDamage(rocketDamage * 2);
                 }
@@ -92,7 +94,7 @@ public class RocketCollusion : MonoBehaviour
                 else if (randomNumber != criticalChance)
                 {
                     damageable.ReceiveDamage(rocketDamage);
-                }
+                } */
             }
 
             

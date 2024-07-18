@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public float maxPlayerHealth;
 
     public PlayerButtonInputs playerButtonInputs;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,5 +28,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             currentPlayerHealth -= damage;
         }
         
+    }
+
+    public void OnEnable()
+    {
+        LevellingSystem.playerLevelUpStats += PlayerIncreaseHealth;
+    }
+    public void OnDisable()
+    {
+        LevellingSystem.playerLevelUpStats -= PlayerIncreaseHealth;
+    }
+
+    public void PlayerIncreaseHealth()
+    {
+        maxPlayerHealth *= 1.15f;
+        currentPlayerHealth = maxPlayerHealth;
     }
 }

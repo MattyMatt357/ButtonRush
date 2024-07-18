@@ -29,6 +29,20 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector]
     public bool enemyAttacking;
 
+    public Transform target;
+    public bool isChasing;
+
+    public Transform sphere;
+
+    public float timeBetweenAttacks;
+    public bool isPatrolling;
+    // public Transform enemyTransfrom;
+    public Vector3 playerLocation;
+
+    public EnemyHealth enemyHealth;
+    [HideInInspector]
+    public bool enemyDead;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,29 +53,58 @@ public class EnemyAI : MonoBehaviour
         detectingTime = 0.0f;
         animator = GetComponent<Animator>();
         enemyAttacking = false;
+        isChasing = false;
+        sphere = transform.Find("SpheresCentre");
+        isPatrolling = true;
+       // enemyTransfrom = GameObject.Find("oritentation").transform;
+       enemyHealth = GetComponent<EnemyHealth>();
+        enemyDead = false;
+        gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerInSightRange = Physics.CheckSphere(transform.position, playerSightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, playerAttackRange, whatIsPlayer);
+        playerInSightRange = Physics.CheckSphere(sphere.transform.position, playerSightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(sphere.transform.position, playerAttackRange, whatIsPlayer);
        
+        playerLocation = new Vector3(player.position.x, transform.position.y, player.position.z);
 
-        if (!playerInSightRange) 
+        if (!playerInSightRange && !playerInAttackRange)
         {
-            enemyState = EnemyState.Patrolling;
-            detectedPlayer = false;
-            detectingTime = 0.0f;
+            isPatrolling = true;
+            isChasing = false;
+            if (isPatrolling && !isChasing)
+            {
+                enemyState = EnemyState.Patrolling;
+            }
+           
         }
-        else if (playerInSightRange == true && !playerInAttackRange)
-        {
+
+        if (playerInSightRange && !playerInAttackRange && !isChasing)
+        { 
+            isPatrolling = false;
             enemyState = EnemyState.Detecting;
         }
 
-        else if (playerInAttackRange && playerInSightRange)
+        if (playerInSightRange && !playerInAttackRange && isChasing) 
+        {
+            enemyState = EnemyState.Chasing;
+        }
+
+        if (playerInSightRange && playerInAttackRange)
         {
             enemyState = EnemyState.Attacking;
+        }
+
+        if(!enemyHealth.canDamage)
+        {
+            enemyState = EnemyState.Dying;
+        }
+
+        if (enemyDead)
+        {
+            enemyState = EnemyState.Death;
         }
 
         switch (enemyState) 
@@ -78,6 +121,13 @@ public class EnemyAI : MonoBehaviour
               case EnemyState.Attacking:
                   AttackPlayer();
                   break;
+              case EnemyState.Dying:
+                StartCoroutine(EnemyDeathCooldown());
+                  break;
+              case EnemyState.Death:
+                gameObject.SetActive(false);
+                break;
+
           } 
 
        /* if (enemyState == EnemyState.Patrolling)
@@ -91,51 +141,40 @@ public class EnemyAI : MonoBehaviour
 
        // agent.SetDestination(player.transform.position);
     }
-
+    /// <summary>
+    /// Makes the enemy patrol
+    /// </summary>
     public void Patrol()
     {
-        detectedPlayer = false;
+        isChasing = false;
+        // if setWalkPoint == false, look for "WalkingPoint"
+        if (!setWalkPoint)
+        {
+            SearchForWalkPoint();
+        }
         
-        setWalkPoint = false;
+        //Makes enemy go to walking point
+        if (setWalkPoint)
+        {
+            animator.SetBool("IsWalking", true);
+            agent.SetDestination(walkingPoint);
+        }
+
         Vector3 distanceToWalkPoint = transform.position - walkingPoint;
 
-         if (distanceToWalkPoint.magnitude < 1f)
-         {
-            StartCoroutine(EnemyWaiting());
-           
-         }
-
-         if (setWalkPoint == false)
-         {
-              animator.SetBool("IsWalking", false);
-
-              float randomZ = Random.Range(-walkingRange, walkingRange);
-              float randomX = Random.Range(-walkingRange, walkingRange);
-
-                walkingPoint = new Vector3(transform.position.x + randomX,
-                    transform.position.y, transform.position.z + randomZ);
-
-                if (Physics.Raycast(walkingPoint, Vector3.down, 7f, whatIsGround))
-                {
-                    setWalkPoint = true;
-                }
-         }
-           
-            if (setWalkPoint == true) 
-            {
-                animator.SetBool("IsWalking", true);
-               // agent.enabled = true;
-                agent.SetDestination(walkingPoint);
-              //  transform.LookAt(walkingPoint);
-            }
-
-        
+        if (distanceToWalkPoint.magnitude < 1)
+        {
+            setWalkPoint = false;
+        }
     }
-
+    /// <summary>
+    /// If the player is in the enemy's sight range, the enemy will detect the player over time
+    /// </summary>
     public void DetectingPlayer()
     {
-        transform.LookAt(player.transform.position);
-        
+        isPatrolling = false;
+       // transform.LookAt(enemyTransfrom.transform.position);
+        transform.LookAt(playerLocation);
         detectedPlayer = true;
 
         if (detectedPlayer)
@@ -145,40 +184,49 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = true;
         }
 
-        if (detectingTime >= playerDetectedTime && !playerInAttackRange)
+        if (playerInSightRange && detectingTime >= playerDetectedTime)
         {
-            enemyState = EnemyState.Chasing;
+            isChasing = true;
         }
     }
-
+    /// <summary>
+    /// Sets the enemy to chase the player
+    /// </summary>
     public void ChasingPlayer()
-    {
-        agent.SetDestination(player.position);
+    { 
         agent.isStopped = false;
-       
-         
+        agent.SetDestination(player.position);
     }
-
+    /// <summary>
+    /// The function to make the enemy attack the player
+    /// </summary>
     public void AttackPlayer()
     {
+       // enemyTransfrom.transform.LookAt(player.transform.position);
+        transform.LookAt(playerLocation);
+        
         agent.SetDestination(transform.position);
-        enemyAttacking = true; 
+        enemyAttacking = true;
+        animator.SetBool("IsWalking", false);
+        agent.isStopped = true;
 
         if (enemyAttacking)
         {
             animator.SetTrigger("IsAttacking");
-            
-            StartCoroutine(EnemyAttackCooldown());
+
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
        
     }
 
     public enum EnemyState
     {
-        Patrolling,
-        Detecting,
-        Chasing,
-        Attacking
+        Patrolling = 0,
+        Detecting = 1,
+        Chasing = 2,
+        Attacking = 3,
+        Dying = 4,
+        Death = 5,
     }
 
     public IEnumerator EnemyWaiting()
@@ -194,4 +242,40 @@ public class EnemyAI : MonoBehaviour
         enemyAttacking = true;
 
     }
+    public void ResetAttack()
+    {
+        enemyAttacking = false;
+    }
+
+    public void SearchForWalkPoint()
+    {
+        animator.SetBool("IsWalking", false);
+
+        float randomZ = Random.Range(-walkingRange, walkingRange);
+        float randomX = Random.Range(-walkingRange, walkingRange);
+
+        walkingPoint = new Vector3(transform.position.x + randomX,
+            transform.position.y, transform.position.z + randomZ);
+
+        if (Physics.Raycast(walkingPoint, -transform.up, 7f, whatIsGround))
+        {
+            setWalkPoint = true;
+        }
+    }
+
+   /* public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(sphere.transform.position, playerSightRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(sphere.transform.position, playerAttackRange);
+    } */
+
+    public IEnumerator EnemyDeathCooldown()
+    {
+        yield return new WaitForSeconds(5f);
+        enemyDead = true;
+    }
+
+    
 }

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonName: Lance Charge
   ButtonDescription: Literally go through your enemies
+  buttonDamage: 45
   currentEnergy: 0
   maxEnergy: 0
-  currentAmmo: 0
+  currentAmmo: 15
   maxAmmo: 50

@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionForce: 50
+  rocketButton: {fileID: 11400000, guid: 0bec4e51c180a2f449288a19cb2579bf, type: 2}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonName: Rocket Launcher
   ButtonDescription: Rockets go boom
+  buttonDamage: 35
   currentEnergy: 0
   maxEnergy: 0
-  currentAmmo: 50
+  currentAmmo: 37
   maxAmmo: 50

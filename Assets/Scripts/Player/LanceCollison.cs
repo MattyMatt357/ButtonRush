@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CalculateDamage;
 
 public class LanceCollison : MonoBehaviour
 {
     public float lanceDamage;
+    public Buttons lanceButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +32,9 @@ public class LanceCollison : MonoBehaviour
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
 
-            
-             if (randomNumber <= critChance)
+            float lanceCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, critChance, lanceButton.buttonDamage, 1.5f);
+            damageable.ReceiveDamage(lanceCritDamage);
+            /* if (randomNumber <= critChance)
              {
                  damageable.ReceiveDamage(lanceDamage * 1.5f);
                  Debug.Log("LanceDamage: " + lanceDamage * 1.5f);
@@ -41,7 +44,10 @@ public class LanceCollison : MonoBehaviour
              {
                  damageable.ReceiveDamage(lanceDamage);
                  Debug.Log("LanceDamage: " + lanceDamage);
-             } 
+             } */
+
+            
+           
         }
     }
 

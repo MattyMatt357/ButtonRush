@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActions
 {
@@ -10,7 +11,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public GameObject rocket;
 
-   // public Camera playerCamera;
+    public Camera playerCamera;
 
     public GameObject shield;
     
@@ -53,6 +54,10 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public EquippedButton equippedButton;
     public bool canUseButtons;
+
+    public ParticleSystem particleSystem;
+
+    public Image crosshair;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +68,26 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         canLanceCharge = true;
         equippedButton = EquippedButton.Laser;
         canUseButtons = true;
+        particleSystem = GameObject.Find("LaserStart").GetComponent<ParticleSystem>();
+
+        //Button stats at start
+            //laser button
+        laserButton.maxEnergy = 500f;
+        laserButton.buttonDamage = 25f;
+        laserButton.currentEnergy = laserButton.maxEnergy;
+            //rocket button
+        rocketLauncherButton.maxAmmo = 25;
+        rocketLauncherButton.buttonDamage = 35;
+        rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
+            //shield button
+        shieldButton.maxEnergy = 50;
+        shieldButton.currentEnergy = shieldButton.maxEnergy;
+        // lance button
+        lanceButton.maxAmmo = 50;
+        lanceButton.currentAmmo = lanceButton.maxAmmo;
+        lanceButton.buttonDamage = 45;
+
+        playerCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -73,6 +98,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             laserButton.currentEnergy -= laserEnergyRate * Time.deltaTime;
             laserButton.currentEnergy = Mathf.Clamp(laserButton.currentEnergy, 0, laserButton.maxEnergy);
             lineRenderer.SetPosition(0, laserStartPoint.position);
+            particleSystem.Play();
 
         }
         
@@ -87,15 +113,18 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
-            {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+           // if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
+                if (Physics.Raycast(ray, out hit, laserRange))
+                {
                 
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
 
 
                 if (damageable != null)
                 {
-                    damageable.ReceiveDamage(25f * Time.deltaTime);
+                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime);
                 }
                // else if (damageable == null)
                 {
@@ -160,10 +189,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         }
     }
 
-    public void ButtonUse()
-    {
-        
-    }
+    
 
     public void OnUseButton1(InputAction.CallbackContext context)
     {
@@ -225,8 +251,10 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.SetPosition(0, laserStartPoint.position);
                 RaycastHit hit;
 
-                if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
-                {
+                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+                //if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
+                    if (Physics.Raycast(ray, out hit, laserRange))
+                    {
                     lineRenderer.SetPosition(1, hit.point);
 
 
@@ -247,7 +275,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 else
                 {
 
-                    lineRenderer.SetPosition(1, laserStartPoint.position + (laserStartPoint.forward * laserRange));
+                    lineRenderer.SetPosition(1, ray.origin + (ray.direction * laserRange));
                     dealingLaserDamage = false;
                 }
             }
@@ -258,6 +286,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.enabled = false;
                 dealingLaserDamage = false;
                 lineRenderer.SetPosition(1, laserStartPoint.position);
+                particleSystem.Stop();
             }
         }
        
@@ -284,9 +313,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public IEnumerator LaserCooldown()
     {
         lineRenderer.enabled = false;
+        particleSystem.Stop();
         yield return new WaitForSeconds(laserCooldownTime);
         lineRenderer.enabled = true;
         laserButton.currentEnergy = laserButton.maxEnergy;
+        
     }
 
     public IEnumerator ShieldCooldown()
@@ -313,15 +344,30 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public void OnEnable()
     {
         PlayerMovement.displayPauseMenu += EnableButtons;
+        LevellingSystem.playerLevelUpStats += IncreaseButtonStats;
     }
 
     public void OnDisable()
     {
         PlayerMovement.displayPauseMenu -= EnableButtons;
+        LevellingSystem.playerLevelUpStats -= IncreaseButtonStats;
     }
 
     public void EnableButtons()
     {
         canUseButtons = !canUseButtons;
+    }
+
+    public void IncreaseButtonStats()
+    {
+        // Increasing button ammo/energy
+        lanceButton.maxAmmo += 5;
+        rocketLauncherButton.maxAmmo += 5;
+        shieldButton.maxEnergy += 10;
+        laserButton.maxEnergy += 50;
+        // Increasing button damage
+        lanceButton.buttonDamage += 10;
+        rocketLauncherButton.buttonDamage += 5;
+        laserButton.buttonDamage += 5;
     }
 }
