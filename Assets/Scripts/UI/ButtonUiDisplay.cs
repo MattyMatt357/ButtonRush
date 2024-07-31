@@ -61,6 +61,8 @@ public class ButtonUiDisplay : MonoBehaviour
         ShowPlayerLevel();
 
         DisplayButtonDamage(laserButton, laserDamageText, "Laser Damage: ");
+        DisplayButtonDamage(rocketLauncherButton, rocketDamageText, "Rocket Damage: ");
+        DisplayButtonDamage(lanceChargeButton, lanceDamageText, "Lance Damage: ");
     }
 
     public void ButtonBarDisplay(Slider slider, Buttons button)

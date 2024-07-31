@@ -257,7 +257,7 @@ public class EnemyAI : MonoBehaviour
         walkingPoint = new Vector3(transform.position.x + randomX,
             transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkingPoint, -transform.up, 7f, whatIsGround))
+        if (Physics.Raycast(walkingPoint, -transform.up, 5f, whatIsGround))
         {
             setWalkPoint = true;
         }

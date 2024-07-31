@@ -31,9 +31,14 @@ public class LanceCollison : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-
-            float lanceCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, critChance, lanceButton.buttonDamage, 1.5f);
-            damageable.ReceiveDamage(lanceCritDamage);
+            IEffectable effectable = other.gameObject.GetComponent<IEffectable>();
+            if (damageable != null)
+            {
+                float lanceCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, critChance, lanceButton.buttonDamage, 1.5f);
+                damageable.ReceiveDamage(lanceCritDamage);
+            }
+            effectable?.GiveStatusEffect();
+           
             /* if (randomNumber <= critChance)
              {
                  damageable.ReceiveDamage(lanceDamage * 1.5f);

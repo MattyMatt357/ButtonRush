@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SavingAndLoadingLibrary;
+using System;
 
 public class SaveSystem : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SaveSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //References to objects
         playerHealth = FindObjectOfType<PlayerHealth>();
         playerTransform = GameObject.Find("Player").transform;
         savingSystem = GetComponent<SavingSystem>();
@@ -41,11 +43,19 @@ public class SaveSystem : MonoBehaviour
         levellingSystem = FindObjectOfType<LevellingSystem>();
         playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
+        //Orders array
+        Array.Sort(enemies, (a,b) => { return a.name.CompareTo(b.name); });
         for (int i = 0; i < enemies.Length; i++)
         {
             enemyAIs[i] = enemies[i].GetComponent<EnemyAI>();
             enemyHealth[i] = enemies[i].GetComponent<EnemyHealth>();
+            
+        }
+
+        //If loading game from Main Menu
+        if (MainMenuOptions.isLoadedGame == true)
+        {
+            LoadGame();
         }
     }
 
@@ -89,9 +99,9 @@ public class SaveSystem : MonoBehaviour
         gameState.playerEquippedButton = (int) playerButtonInputs.equippedButton;
 
         savingSystem.SaveJson(laserButton, "/laserData");
-        savingSystem.SaveJson(rocketLauncherButton, "/RocketData");
+       savingSystem.SaveJson(rocketLauncherButton, "/RocketData");
         savingSystem.SaveJson(lanceChargeButton, "/lanceButtonData");
-        savingSystem.SaveJson(shieldButton, "/ShieldButtonData");
+       savingSystem.SaveJson(shieldButton, "/ShieldButtonData");
 
         //Enemies
         for (int i = 0; i < enemies.Length; i++)

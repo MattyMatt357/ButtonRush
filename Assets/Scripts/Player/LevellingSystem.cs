@@ -14,13 +14,16 @@ public class LevellingSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!MainMenuOptions.isLoadedGame)
+        {
+            level = 1;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        level = Mathf.Clamp(level, 1, 10);
     }
 
     public void LevelUp()
@@ -46,24 +49,12 @@ public class LevellingSystem : MonoBehaviour
 
     public void AddExp(int expAmount)
     {
-        currentExp += expAmount;
+       currentExp += expAmount;
        
        while (currentExp >= maxExp)
-        {
+       {
             currentExp -= maxExp;
             LevelUp();
-        }
-    }
-
-    public void addXP(int xpToAdd)
-    {
-        currentExp += xpToAdd;
-        while (currentExp >= maxExp) 
-        { 
-            currentExp -= maxExp;
-            
-            LevelUp();
-            
-        }
+       }
     }
 }

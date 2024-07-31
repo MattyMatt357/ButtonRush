@@ -55,7 +55,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public EquippedButton equippedButton;
     public bool canUseButtons;
 
-    public ParticleSystem particleSystem;
+   // public ParticleSystem particleSystem;
 
     public Image crosshair;
     // Start is called before the first frame update
@@ -68,24 +68,29 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         canLanceCharge = true;
         equippedButton = EquippedButton.Laser;
         canUseButtons = true;
-        particleSystem = GameObject.Find("LaserStart").GetComponent<ParticleSystem>();
+       // particleSystem = GameObject.Find("LaserStart").GetComponent<ParticleSystem>();
 
         //Button stats at start
+        if (MainMenuOptions.isLoadedGame == false)
+        {
             //laser button
-        laserButton.maxEnergy = 500f;
-        laserButton.buttonDamage = 25f;
-        laserButton.currentEnergy = laserButton.maxEnergy;
+            laserButton.maxEnergy = 500f;
+            laserButton.buttonDamage = 25f;
+            laserButton.currentEnergy = laserButton.maxEnergy;
             //rocket button
-        rocketLauncherButton.maxAmmo = 25;
-        rocketLauncherButton.buttonDamage = 35;
-        rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
+            rocketLauncherButton.maxAmmo = 25;
+            rocketLauncherButton.buttonDamage = 35;
+            rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
             //shield button
-        shieldButton.maxEnergy = 50;
-        shieldButton.currentEnergy = shieldButton.maxEnergy;
-        // lance button
-        lanceButton.maxAmmo = 50;
-        lanceButton.currentAmmo = lanceButton.maxAmmo;
-        lanceButton.buttonDamage = 45;
+            shieldButton.maxEnergy = 50;
+            shieldButton.currentEnergy = shieldButton.maxEnergy;
+            // lance button
+            lanceButton.maxAmmo = 50;
+            lanceButton.currentAmmo = lanceButton.maxAmmo;
+            lanceButton.buttonDamage = 45;
+        }
+        
+           
 
         playerCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
@@ -93,12 +98,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     // Update is called once per frame
     void Update()
     {
+       // RocketLauncherRocketSpawn.transform.position.x = rocketLauncher.transform.rotation.x;   
+
         if (isLaserButtonHeld)
         {
             laserButton.currentEnergy -= laserEnergyRate * Time.deltaTime;
             laserButton.currentEnergy = Mathf.Clamp(laserButton.currentEnergy, 0, laserButton.maxEnergy);
             lineRenderer.SetPosition(0, laserStartPoint.position);
-            particleSystem.Play();
+            GetComponent<ParticleSystem>().Play();
 
         }
         
@@ -199,11 +206,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             if (rocketLauncherButton.currentAmmo > 0f && context.performed)
             {
 
-                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, rocket.transform.rotation);
+                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, Quaternion.identity);
+
+                // rockets.GetComponent<Rigidbody>().velocity = RocketLauncherRocketSpawn.forward * 1;
                 //Debug.Log(RocketLauncherRocketSpawn.transform.rotation);
                 //Debug.Log("Rockets:" + rockets.transform.rotation);
-                rockets.transform.rotation = transform.rotation;
-                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce, ForceMode.Impulse);
+                // rockets.transform.Rotate(new Vector3(0, 0, 0));
+               // Quaternion.Euler(rockets.transform.TransformDirection(Vector3.right));
+                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.right * rocketForce, ForceMode.Impulse);
                 rocketLauncherButton.currentAmmo--;
                 // rockets.transform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
 
@@ -286,7 +296,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.enabled = false;
                 dealingLaserDamage = false;
                 lineRenderer.SetPosition(1, laserStartPoint.position);
-                particleSystem.Stop();
+                GetComponent<ParticleSystem>().Stop();
             }
         }
        
@@ -313,7 +323,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public IEnumerator LaserCooldown()
     {
         lineRenderer.enabled = false;
-        particleSystem.Stop();
+        GetComponent<ParticleSystem>().Stop();
         yield return new WaitForSeconds(laserCooldownTime);
         lineRenderer.enabled = true;
         laserButton.currentEnergy = laserButton.maxEnergy;

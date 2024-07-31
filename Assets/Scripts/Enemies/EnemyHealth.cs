@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour, IDamageable
+public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 {
     public float enemyHealth;
     public LevellingSystem levellingSystem;
@@ -12,6 +12,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public EnemyAI enemyAI;
     public bool canDamage;
 
+    public bool isEffected;
+    public StatusEffect statusEffect;
+
+    public Rigidbody rigidbody;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +24,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         levellingSystem = FindObjectOfType<LevellingSystem>();
         enemyAI = GetComponent<EnemyAI>();
         canDamage = true;
+        isEffected = false;
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -36,6 +43,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
                 EnemyDeath();
             }
         }
+
+
+        {
+            
+        }
     }
 
     public void ReceiveDamage(float damage)
@@ -48,7 +60,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             
         }
     }
-
+    /// <summary>
+    /// Will give EXP to player, spawn 2 pickups and trigger the enemy's death animation
+    /// </summary>
     public void EnemyDeath()
     {
         canDamage = false;
@@ -62,6 +76,83 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         //GetComponent<Animator>().Play("Death");
        // Destroy(gameObject);
     }
+    /// <summary>
+    /// Checks if 'isEffected' is true or false and if true, will trigger the effects
+    /// </summary>
+    public void GiveStatusEffect()
+    {
+        if (!isEffected)
+        {
+            int randomNumber = Random.Range(0, 100);
+            int effectChance = 1;
+            isEffected = StatusEffectCheck(effectChance, randomNumber);
+            switch (statusEffect)
+            {
+                case (StatusEffect.Frozen):
+                    StartCoroutine(Frozen());
+                    break;
+                case (StatusEffect.Poison):
+                    StartCoroutine(Poisoned());
+                    break;
 
-    
+            }
+
+           
+            
+        }
+
+        
+    }
+
+    public static bool StatusEffectCheck(int effectChance, int randomNumber)
+    {       
+        if (randomNumber >= effectChance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }      
+    }
+
+    public enum StatusEffect
+    {
+        Poison,
+        Frozen
+    }
+
+    public IEnumerator Frozen()
+    {
+        while (isEffected)
+        {
+            //transform.SetPositionAndRotation(transform.position, transform.rotation);
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            
+            yield return new WaitForSeconds(10);
+            rigidbody.constraints = RigidbodyConstraints.None;
+            
+            isEffected = false;
+        }
+        
+    }
+
+   
+
+    public IEnumerator Poisoned()
+    {
+        while (isEffected)
+        {
+            
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    ReceiveDamage(5);
+
+                    yield return new WaitForSeconds(3f);
+                }
+                isEffected = false;
+            }
+        }
+    }
 }

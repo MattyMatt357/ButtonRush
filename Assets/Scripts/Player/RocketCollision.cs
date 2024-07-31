@@ -86,18 +86,11 @@ public class RocketCollusion : MonoBehaviour
             {
                 float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
                 damageable.ReceiveDamage(rocketCritDamage);
-                /* if (randomNumber <= criticalChance)
-                {
-                    damageable.ReceiveDamage(rocketDamage * 2);
-                }
-
-                else if (randomNumber != criticalChance)
-                {
-                    damageable.ReceiveDamage(rocketDamage);
-                } */
             }
+             
+            IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();
+            effectable?.GiveStatusEffect();
 
-            
         }
     }
 }

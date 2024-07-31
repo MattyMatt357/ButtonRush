@@ -10,6 +10,9 @@ public class PauseMenu : MonoBehaviour
     bool pauseMenuDisplayed;
     public TextMeshProUGUI playerExpDisplay;
     public LevellingSystem levellingSystem;
+    public LevelTransition levelTransition;
+    public GameObject loadScreen;
+    public Slider loadBar;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +20,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         pauseMenuDisplayed = false;
         levellingSystem = FindObjectOfType<LevellingSystem>();
+        levelTransition = GetComponent<LevelTransition>();
 
     }
 
@@ -70,5 +74,10 @@ public class PauseMenu : MonoBehaviour
     public void OnDisable()
     {
         PlayerMovement.displayPauseMenu -= SwitchingPauseMenu;
+    }
+
+    public void ExitToMainMenu()
+    {
+        StartCoroutine(levelTransition.LevelChange("Main Menu", loadScreen, loadBar));
     }
 }
