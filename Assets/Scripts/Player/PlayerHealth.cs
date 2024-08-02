@@ -11,13 +11,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public delegate void PlayerDefeat();
     public static event PlayerDefeat playerDefeat;
-    public EnemyHealth enemyHealth;
+   // public EnemyHealth enemyHealth;
     
     // Start is called before the first frame update
     void Start()
     {
         playerButtonInputs = GetComponent<PlayerButtonInputs>();
-        enemyHealth = FindObjectOfType<EnemyHealth>();
+       // enemyHealth = FindObjectOfType<EnemyHealth>();
     }
 
     // Update is called once per frame
@@ -28,10 +28,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             playerDefeat?.Invoke();
         }
 
-        if(Input.GetKey(KeyCode.LeftArrow)) 
-        {
-            enemyHealth.GiveStatusEffect();
-        }    
+        
     }
 
     public void ReceiveDamage(float damage)

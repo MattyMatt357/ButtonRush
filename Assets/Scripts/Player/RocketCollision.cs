@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CalculateDamage;
+//using CalculateDamage;
 
 public class RocketCollusion : MonoBehaviour
 {
@@ -25,23 +25,7 @@ public class RocketCollusion : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-        /* int randomNumber = Random.Range(1, 100);
-         int criticalChance = 77;
-
-         float rocketDamage = 35f;
-
-         if (other.gameObject.CompareTag("Enemy"))
-         {
-             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-             if (randomNumber <= criticalChance)
-             {
-                 damageable.ReceiveDamage(rocketDamage * 2);
-             }
-
-             else if (randomNumber != criticalChance)
-             {
-                 damageable.ReceiveDamage(rocketDamage);
-             } */
+       
         if (other.gameObject.CompareTag("Enemy"))
         {
             //IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
@@ -49,13 +33,7 @@ public class RocketCollusion : MonoBehaviour
             Destroy(gameObject);
         }
         
-        //if (other.gameObject.CompareTag("Player"))
-        {
-            //Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
-          // Destroy(gameObject);
-        }
-
-
+        
     }
 
     /// <summary>
@@ -84,8 +62,8 @@ public class RocketCollusion : MonoBehaviour
 
             if (damageable != null)
             {
-                float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
-                damageable.ReceiveDamage(rocketCritDamage);
+                //float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
+                //damageable.ReceiveDamage(rocketCritDamage);
             }
              
             IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();

@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
     public StatusEffect statusEffect;
 
     public Rigidbody rigidbody;
+    public float enemySpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -84,7 +85,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         if (!isEffected)
         {
             int randomNumber = Random.Range(0, 100);
-            int effectChance = 1;
+            int effectChance = 10;
             isEffected = StatusEffectCheck(effectChance, randomNumber);
             switch (statusEffect)
             {
@@ -127,11 +128,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         while (isEffected)
         {
             //transform.SetPositionAndRotation(transform.position, transform.rotation);
-            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            
+            //rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+            enemyAI.agent.speed = 0;
             yield return new WaitForSeconds(10);
-            rigidbody.constraints = RigidbodyConstraints.None;
-            
+            // rigidbody.constraints = RigidbodyConstraints.None;
+            enemyAI.agent.speed = enemySpeed;
+
             isEffected = false;
         }
         
@@ -142,17 +145,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
     public IEnumerator Poisoned()
     {
         while (isEffected)
-        {
-            
+        {                       
+            for (int i = 0; i < 5; i++)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    ReceiveDamage(5);
+                ReceiveDamage(5);
 
-                    yield return new WaitForSeconds(3f);
-                }
-                isEffected = false;
+                yield return new WaitForSeconds(3f);
             }
+            isEffected = false;
+            
         }
     }
 }

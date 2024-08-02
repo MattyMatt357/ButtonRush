@@ -105,7 +105,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             laserButton.currentEnergy -= laserEnergyRate * Time.deltaTime;
             laserButton.currentEnergy = Mathf.Clamp(laserButton.currentEnergy, 0, laserButton.maxEnergy);
             lineRenderer.SetPosition(0, laserStartPoint.position);
-            GetComponent<ParticleSystem>().Play();
+           // GetComponent<ParticleSystem>().Play();
 
         }
         
@@ -206,14 +206,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             if (rocketLauncherButton.currentAmmo > 0f && context.performed)
             {
 
-                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, Quaternion.identity);
+                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, rocket.transform.rotation);
 
                 // rockets.GetComponent<Rigidbody>().velocity = RocketLauncherRocketSpawn.forward * 1;
                 //Debug.Log(RocketLauncherRocketSpawn.transform.rotation);
                 //Debug.Log("Rockets:" + rockets.transform.rotation);
                 // rockets.transform.Rotate(new Vector3(0, 0, 0));
                // Quaternion.Euler(rockets.transform.TransformDirection(Vector3.right));
-                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.right * rocketForce, ForceMode.Impulse);
+                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce, ForceMode.Impulse);
                 rocketLauncherButton.currentAmmo--;
                 // rockets.transform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
 
@@ -296,7 +296,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.enabled = false;
                 dealingLaserDamage = false;
                 lineRenderer.SetPosition(1, laserStartPoint.position);
-                GetComponent<ParticleSystem>().Stop();
+               // GetComponent<ParticleSystem>().Stop();
             }
         }
        

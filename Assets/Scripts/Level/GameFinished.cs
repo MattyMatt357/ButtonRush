@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class GameFinished : MonoBehaviour
 {
-    public GameObject gameFinishedScreen;
-    public GameObject gameOverScreen;
+    public delegate void GameFinishedCallback();
+    public static event GameFinishedCallback GameFinish;
     // Start is called before the first frame update
     void Start()
     {
-        gameFinishedScreen.SetActive(false);
-        gameOverScreen.SetActive(false);
-        Time.timeScale = 1;
+        //gameFinishedScreen.SetActive(false);
+       // gameOverScreen.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -26,26 +26,11 @@ public class GameFinished : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            gameFinishedScreen.SetActive(true);
-            Time.timeScale = 0f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            GameFinish?.Invoke();
         }
     }
 
-    public void DisplayGameOver()
-    {
-        gameOverScreen.SetActive(true);
-        Time.timeScale = 0f;
-    }
+    
 
-    public void OnEnable()
-    {
-        PlayerHealth.playerDefeat += DisplayGameOver;
-    }
-
-    public void OnDisable() 
-    {
-        PlayerHealth.playerDefeat -= DisplayGameOver;
-    }
+   
 }

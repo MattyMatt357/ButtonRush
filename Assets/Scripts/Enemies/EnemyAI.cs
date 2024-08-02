@@ -18,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     public LayerMask whatIsGround;
     public LayerMask whatIsPlayer;
 
+    [HideInInspector]
     public float detectingTime;
     public bool detectedPlayer;
     public float playerDetectedTime = 4f;
@@ -29,7 +30,7 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector]
     public bool enemyAttacking;
 
-    public Transform target;
+    //public Transform target;
     public bool isChasing;
 
     public Transform sphere;
@@ -244,6 +245,7 @@ public class EnemyAI : MonoBehaviour
     }
     public void ResetAttack()
     {
+       // animator.SetTrigger("IsAttacking");
         enemyAttacking = false;
     }
 

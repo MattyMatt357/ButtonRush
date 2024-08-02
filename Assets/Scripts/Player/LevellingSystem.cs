@@ -23,7 +23,7 @@ public class LevellingSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        level = Mathf.Clamp(level, 1, 10);
+        level = Mathf.Clamp(level, 1, 15);
     }
 
     public void LevelUp()

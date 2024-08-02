@@ -13,7 +13,9 @@ public class PauseMenu : MonoBehaviour
     public LevelTransition levelTransition;
     public GameObject loadScreen;
     public Slider loadBar;
-
+    //GameFinished/Over screens
+    public GameObject gameFinishedScreen;
+    public GameObject gameOverScreen;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuDisplayed = false;
         levellingSystem = FindObjectOfType<LevellingSystem>();
         levelTransition = GetComponent<LevelTransition>();
+        gameFinishedScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
 
     }
 
@@ -69,15 +73,37 @@ public class PauseMenu : MonoBehaviour
     public void OnEnable()
     {
         PlayerMovement.displayPauseMenu += SwitchingPauseMenu;
+        PlayerHealth.playerDefeat += SwitchingPauseMenu;
+        GameFinished.GameFinish += SwitchingPauseMenu;
     }
 
     public void OnDisable()
     {
         PlayerMovement.displayPauseMenu -= SwitchingPauseMenu;
+        PlayerHealth.playerDefeat -= SwitchingPauseMenu;
+        GameFinished.GameFinish -= SwitchingPauseMenu;
     }
 
     public void ExitToMainMenu()
     {
         StartCoroutine(levelTransition.LevelChange("Main Menu", loadScreen, loadBar));
+    }
+
+    
+
+    public void DisplayGameOver()
+    {
+        gameOverScreen.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void DisplayGameFinished()
+    { 
+        gameFinishedScreen.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

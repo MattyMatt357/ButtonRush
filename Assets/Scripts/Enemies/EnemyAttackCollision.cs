@@ -22,7 +22,7 @@ public class EnemyAttackCollision : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+      //  Debug.Log(other.gameObject.name);
         if (other.gameObject.CompareTag("Player") && enemyAI.enemyAttacking == true)
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
