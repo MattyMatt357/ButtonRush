@@ -32,10 +32,10 @@ public class RocketCollusion : MonoBehaviour
         {
             //IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             RocketDamage(other.contacts[0].point);
-            Destroy(gameObject);
+            
         }
-        
-        
+        Destroy(gameObject);
+
     }
 
     /// <summary>
