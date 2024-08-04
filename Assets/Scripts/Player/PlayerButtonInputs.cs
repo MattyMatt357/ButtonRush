@@ -207,20 +207,17 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             equippedButton = EquippedButton.RocketLauncher;
             if (rocketLauncherButton.currentAmmo > 0f && context.performed)
             {
-               // RaycastHit hit;
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, Quaternion.LookRotation(rayHit.direction));
+                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position,
+                    Quaternion.LookRotation(rayHit.direction));
 
-                // rockets.GetComponent<Rigidbody>().velocity = RocketLauncherRocketSpawn.forward * 1;
-                //Debug.Log(RocketLauncherRocketSpawn.transform.rotation);
-                //Debug.Log("Rockets:" + rockets.transform.rotation);
-                // rockets.transform.Rotate(new Vector3(0, 0, 0));
-               // Quaternion.Euler(rockets.transform.TransformDirection(Vector3.right));
-                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce, ForceMode.Impulse);
+                
+                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce,
+                    ForceMode.Impulse);
                 rocketLauncherButton.currentAmmo--;
-                // rockets.transform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
+                
 
             }
         }
@@ -231,7 +228,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         if (canUseButtons)
         {
             equippedButton = EquippedButton.Shield;
-            //Instantiate(shield, shieldSpawn.transform.position, Quaternion.identity);
+           
             if (context.performed)
             {
                 isShieldButtonHeld = true;
@@ -261,13 +258,12 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.enabled = true;
                 Debug.Log("firingMyLaser!");
 
-                //laserButton.currentEnergy -= laserEnergyRate * Time.deltaTime;
+                
 
                 lineRenderer.SetPosition(0, laserStartPoint.position);
                 RaycastHit hit;
 
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-                //if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
                     if (Physics.Raycast(ray, out hit, laserRange))
                     {
                     lineRenderer.SetPosition(1, hit.point);
