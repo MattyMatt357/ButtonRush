@@ -24,27 +24,19 @@ public class LevellingSystem : MonoBehaviour
     void Update()
     {
         level = Mathf.Clamp(level, 1, 15);
+        
     }
 
     public void LevelUp()
     {
-        level++;
-
-        playerLevelUpStats?.Invoke();
-
-        //playerHealth.maxPlayerHealth *= 1.15f;
-       // playerHealth.currentPlayerHealth = playerHealth.maxPlayerHealth;
-       // currentExp = 0;
-        maxExp = (int) (maxExp * 1.25);
-
-        /*if (currentExp > maxExp)
+        if (level < 15)
         {
-           // int expRem = currentExp - maxExp;
-           // maxExp -= currentExp;
-           int overMaxExp = currentExp - maxExp;
-            currentExp = 0;
-            currentExp = overMaxExp;
-        } */
+            level++;
+
+            playerLevelUpStats?.Invoke();           
+            maxExp = (int)(maxExp * 1.25);
+
+        }
     }
 
     public void AddExp(int expAmount)

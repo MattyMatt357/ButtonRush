@@ -55,6 +55,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public EquippedButton equippedButton;
     public bool canUseButtons;
 
+    private Ray rayHit;
    // public ParticleSystem particleSystem;
 
     public Image crosshair;
@@ -98,7 +99,8 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     // Update is called once per frame
     void Update()
     {
-       // RocketLauncherRocketSpawn.transform.position.x = rocketLauncher.transform.rotation.x;   
+        rayHit = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // RocketLauncherRocketSpawn.transform.position.x = rocketLauncher.transform.rotation.x;   
 
         if (isLaserButtonHeld)
         {
@@ -163,13 +165,13 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         rocketLauncherButton.currentAmmo = Mathf.Clamp(rocketLauncherButton.currentAmmo, 0, rocketLauncherButton.maxAmmo);
         lanceButton.currentAmmo = Mathf.Clamp(lanceButton.currentAmmo, 0, lanceButton.maxAmmo);
 
-        if (Input.GetKeyDown(KeyCode.Return))
+       /* if (Input.GetKeyDown(KeyCode.Return))
         { 
             rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
             laserButton.currentEnergy = laserButton.maxEnergy;
             shieldButton.currentEnergy = shieldButton.maxEnergy;
             lanceButton.currentAmmo = lanceButton.maxAmmo;
-        }
+        } */
 
         //rocketLauncher.transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
         //player.transform.rotation = 
@@ -205,8 +207,11 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             equippedButton = EquippedButton.RocketLauncher;
             if (rocketLauncherButton.currentAmmo > 0f && context.performed)
             {
+               // RaycastHit hit;
 
-                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, rocket.transform.rotation);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position, Quaternion.LookRotation(rayHit.direction));
 
                 // rockets.GetComponent<Rigidbody>().velocity = RocketLauncherRocketSpawn.forward * 1;
                 //Debug.Log(RocketLauncherRocketSpawn.transform.rotation);
@@ -314,7 +319,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                     canLanceCharge = false;
                     lanceAnimator.SetTrigger("LanceAttack");
                     StartCoroutine(LanceChargeCooldown());
-                    --lanceButton.currentAmmo;
+                    lanceButton.currentAmmo--;
                 }
             }
         }

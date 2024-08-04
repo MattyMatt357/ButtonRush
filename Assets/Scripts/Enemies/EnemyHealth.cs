@@ -17,6 +17,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
     public Rigidbody rigidbody;
     public float enemySpeed;
+   // public static int enemyKills;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         canDamage = true;
         isEffected = false;
         rigidbody = GetComponent<Rigidbody>();
+       
     }
 
     // Update is called once per frame
@@ -43,11 +45,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
             {
                 EnemyDeath();
             }
-        }
-
-
-        {
-            
         }
     }
 
@@ -71,6 +68,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         GameObject pickUp1 = Instantiate(playerAmmoPickUp, transform.position, transform.rotation);
         GameObject pickUp2 = Instantiate(playerAmmoPickUp, transform.position, transform.rotation);
         animator.SetTrigger("DeathTrigger");
+        GameFinished.enemyKills++;
+        Debug.Log("Enemy Kills: " + GameFinished.enemyKills);
         
        // enemyAI.enemyState = EnemyAI.EnemyState.Death;
 
@@ -85,7 +84,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         if (!isEffected)
         {
             int randomNumber = Random.Range(0, 100);
-            int effectChance = 10;
+            int effectChance = 55;
             isEffected = StatusEffectCheck(effectChance, randomNumber);
             switch (statusEffect)
             {

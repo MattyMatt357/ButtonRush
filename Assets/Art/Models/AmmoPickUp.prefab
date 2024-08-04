@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 98680681367005615}
   m_Layer: 0
   m_Name: AmmoPickUp
-  m_TagString: Untagged
+  m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,3 +123,4 @@ MonoBehaviour:
   rocketLauncherButton: {fileID: 11400000, guid: 0bec4e51c180a2f449288a19cb2579bf, type: 2}
   shieldButton: {fileID: 11400000, guid: ffa6fbc3e3539f24a8314fc9791c3356, type: 2}
   lanceChargeButton: {fileID: 11400000, guid: 62f4f62ef72e6514abfb857ffe77ffcf, type: 2}
+  playerHealth: {fileID: 0}

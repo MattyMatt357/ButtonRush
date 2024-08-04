@@ -30103,7 +30103,7 @@ GameObject:
   - component: {fileID: 3331107337391837482}
   - component: {fileID: 6475067915606119229}
   - component: {fileID: 5198800277119230519}
-  - component: {fileID: 688200464053981206}
+  - component: {fileID: 1648971058657000495}
   m_Layer: 0
   m_Name: orc
   m_TagString: Untagged
@@ -30186,7 +30186,6 @@ MonoBehaviour:
   playerInAttackRange: 0
   playerAttackRange: 0
   enemyAttacking: 0
-  target: {fileID: 0}
   isChasing: 0
   sphere: {fileID: 3342583995105601070}
   timeBetweenAttacks: 0
@@ -30216,6 +30215,7 @@ MonoBehaviour:
   isEffected: 0
   statusEffect: 0
   rigidbody: {fileID: 0}
+  enemySpeed: 0
 --- !u!195 &6475067915606119229
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -30265,8 +30265,8 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!65 &688200464053981206
-BoxCollider:
+--- !u!136 &1648971058657000495
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -30283,9 +30283,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 2
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &9220503636726764930
 GameObject:
   m_ObjectHideFlags: 0

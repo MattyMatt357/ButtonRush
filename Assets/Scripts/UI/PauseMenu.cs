@@ -16,6 +16,10 @@ public class PauseMenu : MonoBehaviour
     //GameFinished/Over screens
     public GameObject gameFinishedScreen;
     public GameObject gameOverScreen;
+   // public Button SaveGameButton;
+   // public Button LoadGameButton;
+   public PlayerButtonInputs playerButtonInputs;
+    public TextMeshProUGUI enemyKillsText;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,13 +29,16 @@ public class PauseMenu : MonoBehaviour
         levelTransition = GetComponent<LevelTransition>();
         gameFinishedScreen.SetActive(false);
         gameOverScreen.SetActive(false);
-
+        // SaveGameButton.gameObject.SetActive(false);
+        // LoadGameButton.gameObject.SetActive(false);
+        Time.timeScale = 1f;
+        playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        DisplayingPauseMenu();
+        enemyKillsText.text = "Enemy Kills: " + GameFinished.enemyKills.ToString();
 
         playerExpDisplay.text = levellingSystem.currentExp.ToString() + "/" + levellingSystem.maxExp.ToString();
     }
@@ -44,6 +51,7 @@ public class PauseMenu : MonoBehaviour
             Time.timeScale = 0f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+           // SaveGameButton.gameObject.SetActive(true);
         }
 
         else if (!pauseMenuDisplayed)
@@ -68,20 +76,26 @@ public class PauseMenu : MonoBehaviour
         } */
 
         pauseMenuDisplayed = !pauseMenuDisplayed;
+
+        DisplayingPauseMenu();
     }
 
     public void OnEnable()
     {
         PlayerMovement.displayPauseMenu += SwitchingPauseMenu;
-        PlayerHealth.playerDefeat += SwitchingPauseMenu;
-        GameFinished.GameFinish += SwitchingPauseMenu;
+        PlayerHealth.playerDefeat += DisplayGameOver;
+        GameFinished.GameFinish += DisplayGameFinished;
+        SaveSystem.deactivateMenus += MenusDeactvated;
+        GameFinished.GameOverWrongEnemyKills += DisplayGameOver;
     }
 
     public void OnDisable()
     {
         PlayerMovement.displayPauseMenu -= SwitchingPauseMenu;
-        PlayerHealth.playerDefeat -= SwitchingPauseMenu;
-        GameFinished.GameFinish -= SwitchingPauseMenu;
+        PlayerHealth.playerDefeat -= DisplayGameOver;
+        GameFinished.GameFinish -= DisplayGameFinished;
+        SaveSystem.deactivateMenus -= MenusDeactvated;
+        GameFinished.GameOverWrongEnemyKills -= DisplayGameOver;
     }
 
     public void ExitToMainMenu()
@@ -93,17 +107,33 @@ public class PauseMenu : MonoBehaviour
 
     public void DisplayGameOver()
     {
+        pauseMenuDisplayed = true;
+        DisplayingPauseMenu();
         gameOverScreen.SetActive(true);
-        Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        pauseMenu.SetActive(false);
+
     }
 
     public void DisplayGameFinished()
-    { 
-        gameFinishedScreen.SetActive(true);
-        Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+    {
+        pauseMenuDisplayed = true;
+        DisplayingPauseMenu();
+        pauseMenu.SetActive(false);
+        //SaveGameButton.gameObject.SetActive(false);
+        
+         gameFinishedScreen.SetActive(true);
+
     }
+
+    public void MenusDeactvated()
+    {
+        gameFinishedScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
+        pauseMenuDisplayed = false;
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1;
+        playerButtonInputs.canUseButtons = true;
+    }
+
+    
 }

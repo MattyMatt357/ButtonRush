@@ -34,16 +34,16 @@ public class AmmoPickUp : MonoBehaviour
                     break;
                 
                 case 1:
-                    rocketLauncherButton.currentAmmo += 5;
+                    rocketLauncherButton.currentAmmo += 15;
                     break;
                 case 2:
-                    lanceChargeButton.currentAmmo += 5;
+                    lanceChargeButton.currentAmmo += 15;
                     break;
                 case 3:
                     shieldButton.currentEnergy += 15;
                     break;
                 case 4:
-                    playerHealth.currentPlayerHealth += 15;
+                    playerHealth.currentPlayerHealth += 50;
                     break;
             }
 

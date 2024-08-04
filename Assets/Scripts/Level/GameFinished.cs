@@ -8,29 +8,46 @@ public class GameFinished : MonoBehaviour
 {
     public delegate void GameFinishedCallback();
     public static event GameFinishedCallback GameFinish;
+    public delegate void GameOverWrongKills();
+    public static event GameOverWrongKills GameOverWrongEnemyKills;
+    public static int enemyKills;
     // Start is called before the first frame update
     void Start()
     {
         //gameFinishedScreen.SetActive(false);
-       // gameOverScreen.SetActive(false);
+        // gameOverScreen.SetActive(false);
+        if (MainMenuOptions.isLoadedGame == false)
+        { 
+            enemyKills = 0;
+        }
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
+
+
+
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            GameFinish?.Invoke();
-        }
+            if (enemyKills >= 30)
+            {
+                GameFinish?.Invoke();
+            }
+            else if (enemyKills < 30)
+            {
+                GameOverWrongEnemyKills?.Invoke();
+            }
+        } 
+
+        
     }
 
-    
 
-   
 }

@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using CalculateDamage;
+using CalculateDamage;
 
 public class RocketCollusion : MonoBehaviour
 {
     // Start is called before the first frame update
     public float explosionForce;
 
-    //public PlayerHealth player;
+    //public Collider player;
     public Buttons rocketButton;
     public LayerMask enemyLayer;
+   // private Collider rocketCollider;
     void Start()
     {
-       // player = FindObjectOfType<PlayerHealth>();
+       // player = GameObject.Find("Player").GetComponent<Collider>();
+       // rocketCollider = this.GetComponent<Collider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Physics.IgnoreCollision(player.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+       // Physics.IgnoreCollision(player, rocketCollider, true);
         
     }
 
@@ -62,8 +64,8 @@ public class RocketCollusion : MonoBehaviour
 
             if (damageable != null)
             {
-                //float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
-                //damageable.ReceiveDamage(rocketCritDamage);
+                float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
+                damageable.ReceiveDamage(rocketCritDamage);
             }
              
             IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();

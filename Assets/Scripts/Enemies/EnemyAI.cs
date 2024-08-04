@@ -56,11 +56,16 @@ public class EnemyAI : MonoBehaviour
         enemyAttacking = false;
         isChasing = false;
         sphere = transform.Find("SpheresCentre");
-        isPatrolling = true;
+        
        // enemyTransfrom = GameObject.Find("oritentation").transform;
        enemyHealth = GetComponent<EnemyHealth>();
         enemyDead = false;
         gameObject.SetActive(true);
+
+        if(MainMenuOptions.isLoadedGame == false )
+        {
+            isPatrolling = true;
+        }
     }
 
     // Update is called once per frame
@@ -69,6 +74,7 @@ public class EnemyAI : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(sphere.transform.position, playerSightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(sphere.transform.position, playerAttackRange, whatIsPlayer);
        
+        //So the enemy does not rotate when looking/near the player
         playerLocation = new Vector3(player.position.x, transform.position.y, player.position.z);
 
         if (!playerInSightRange && !playerInAttackRange)
@@ -106,6 +112,11 @@ public class EnemyAI : MonoBehaviour
         if (enemyDead)
         {
             enemyState = EnemyState.Death;
+        }
+
+        if (enemyDead == false)
+        {
+            gameObject.SetActive(true);
         }
 
         switch (enemyState) 

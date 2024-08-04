@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SavingAndLoadingLibrary;
 using System;
+using System.Threading;
 
 public class SaveSystem : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class SaveSystem : MonoBehaviour
 
     public LevellingSystem levellingSystem;
     
+    
 
     [Header("Button References")]
     public Buttons shieldButton;
@@ -32,10 +34,15 @@ public class SaveSystem : MonoBehaviour
     public GameObject[] enemies;
     public EnemyAI[] enemyAIs;
     public EnemyHealth[] enemyHealth;
+
+    public delegate void DeactivateMenus();
+    public static event DeactivateMenus deactivateMenus;
+   
+
     // Start is called before the first frame update
     void Start()
     {
-        //References to objects
+        //References to objects or scripts
         playerHealth = FindObjectOfType<PlayerHealth>();
         playerTransform = GameObject.Find("Player").transform;
         savingSystem = GetComponent<SavingSystem>();
@@ -43,6 +50,8 @@ public class SaveSystem : MonoBehaviour
         levellingSystem = FindObjectOfType<LevellingSystem>();
         playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        
+
         //Orders array
         Array.Sort(enemies, (a,b) => { return a.name.CompareTo(b.name); });
         for (int i = 0; i < enemies.Length; i++)
@@ -52,7 +61,7 @@ public class SaveSystem : MonoBehaviour
             
         }
 
-        //If loading game from Main Menu
+        //If loading already started game from Main Menu
         if (MainMenuOptions.isLoadedGame == true)
         {
             LoadGame();
@@ -86,6 +95,7 @@ public class SaveSystem : MonoBehaviour
         gameState.playerLevel = levellingSystem.level;
         gameState.maxEXP = levellingSystem.maxExp;
         gameState.currentEXP = levellingSystem.currentExp;
+       
         //Buttons
       //  gameState.lanceCurrentAmmo = lanceChargeButton.currentAmmo;
       //  gameState.lanceMaxAmmo = lanceChargeButton.maxAmmo;
@@ -112,6 +122,7 @@ public class SaveSystem : MonoBehaviour
             gameState.enemyStates[i] = (int) enemyAIs[i].enemyState;
             
         }
+        gameState.enemyKills = GameFinished.enemyKills;
         savingSystem.SaveJson(gameState, "/GameData");
        
     }
@@ -154,8 +165,13 @@ public class SaveSystem : MonoBehaviour
             enemyAIs[i].isPatrolling = gameState.enemyPatrolling[i];
             enemyAIs[i].isChasing = gameState.enemyChasing[i];
         }
+         GameFinished.enemyKills = gameState.enemyKills;
 
-
+        deactivateMenus?.Invoke();
+        
+        
+       
+        
     }
 
 

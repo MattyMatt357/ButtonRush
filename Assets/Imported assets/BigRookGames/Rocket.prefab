@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375819f91220d8346b854403413e88b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 50
+  explosionForce: 10
   rocketButton: {fileID: 11400000, guid: 0bec4e51c180a2f449288a19cb2579bf, type: 2}
   enemyLayer:
     serializedVersion: 2

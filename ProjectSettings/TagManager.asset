@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Shield
   - Laser
+  - PickUp
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - What Is Ground
   - What Is Player
-  - 
+  - What Is Rocket
   - 
   - 
   - 
