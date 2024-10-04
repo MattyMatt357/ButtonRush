@@ -59,6 +59,8 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
    // public ParticleSystem particleSystem;
 
     public Image crosshair;
+
+    public ButtonDamageType laserDamageType;
     // Start is called before the first frame update
     void Start()
     {
@@ -133,7 +135,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
                 if (damageable != null)
                 {
-                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime);
+                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime, laserDamageType);
                 }
                // else if (damageable == null)
                 {
@@ -371,14 +373,16 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void IncreaseButtonStats()
     {
-        // Increasing button ammo/energy
-        lanceButton.maxAmmo += 5;
-        rocketLauncherButton.maxAmmo += 5;
-        shieldButton.maxEnergy += 10;
-        laserButton.maxEnergy += 50;
+        //Increasing button damage and max ammo/energy       
+       _= shieldButton ^ 10;
+        _ = laserButton ^ 50f;
         // Increasing button damage
-        lanceButton.buttonDamage += 10;
-        rocketLauncherButton.buttonDamage += 5;
-        laserButton.buttonDamage += 5;
+        lanceButton += 10;
+        rocketLauncherButton += 5;
+       // laserButton += 5;
+        
+       
+       
+
     }
 }

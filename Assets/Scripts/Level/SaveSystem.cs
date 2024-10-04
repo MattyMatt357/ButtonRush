@@ -37,7 +37,7 @@ public class SaveSystem : MonoBehaviour
 
     public delegate void DeactivateMenus();
     public static event DeactivateMenus deactivateMenus;
-   
+    //public GameFinished gameFinished;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +50,7 @@ public class SaveSystem : MonoBehaviour
         levellingSystem = FindObjectOfType<LevellingSystem>();
         playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
         
 
         //Orders array
@@ -119,10 +120,11 @@ public class SaveSystem : MonoBehaviour
             gameState.enemyHealth[i] = enemyHealth[i].enemyHealth;
             gameState.enemyPosition[i] = enemies[i].transform.position;
             gameState.enemyRotation[i] = enemies[i].transform.rotation;
-            gameState.enemyStates[i] = (int) enemyAIs[i].enemyState;
-            
+            gameState.enemyStates[i] = (int) enemyAIs[i].enemyState;          
+            gameState.enemyPatrolling[i] = enemyAIs[i].isPatrolling;
+            gameState.enemyChasing[i] = enemyAIs[i].isChasing;
         }
-        gameState.enemyKills = GameFinished.enemyKills;
+        GameState.enemyKills = GameFinished.enemyKills;
         savingSystem.SaveJson(gameState, "/GameData");
        
     }
@@ -165,7 +167,7 @@ public class SaveSystem : MonoBehaviour
             enemyAIs[i].isPatrolling = gameState.enemyPatrolling[i];
             enemyAIs[i].isChasing = gameState.enemyChasing[i];
         }
-         GameFinished.enemyKills = gameState.enemyKills;
+         GameFinished.enemyKills = GameState.enemyKills;
 
         deactivateMenus?.Invoke();
         

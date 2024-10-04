@@ -11,13 +11,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public delegate void PlayerDefeat();
     public static event PlayerDefeat playerDefeat;
-   // public EnemyHealth enemyHealth;
+    // public EnemyHealth enemyHealth;
+    public float playerDefense;
     
     // Start is called before the first frame update
     void Start()
     {
         playerButtonInputs = GetComponent<PlayerButtonInputs>();
        // enemyHealth = FindObjectOfType<EnemyHealth>();
+       if(MainMenuOptions.isLoadedGame == false )
+        {
+            maxPlayerHealth = 100f;
+            currentPlayerHealth = maxPlayerHealth;
+            playerDefense = 0;
+        }
     }
 
     // Update is called once per frame
@@ -35,7 +42,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if(!playerButtonInputs.isShieldButtonHeld)
         {
-            currentPlayerHealth -= damage;
+            currentPlayerHealth -= damage * 100/(100+playerDefense);
         }
         
     }
@@ -53,5 +60,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         maxPlayerHealth *= 1.15f;
         currentPlayerHealth = maxPlayerHealth;
+    }
+
+    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -7,14 +7,13 @@ using TMPro;
 
 public class ButtonUiDisplay : MonoBehaviour
 {
+    [Header("Laser button")]
     public Buttons laserButton;
     public Slider laserSlider;
-
+    [Header("Shield button")]
     public Buttons shieldButton;
     public Slider shieldSlider;
-
-    public int rocketAmmo;
-    public int LanceAmmo;
+ 
 
     public TextMeshProUGUI rocketAmmoDisplay;
     public TextMeshProUGUI lanceAmmoDisplay;
@@ -30,14 +29,16 @@ public class ButtonUiDisplay : MonoBehaviour
     public Camera camera;
 
     public LevellingSystem levellingSystem;
-
+    [Header("Levelling system UI")]
     public Slider expSlider;
     public TextMeshProUGUI playerLevelText;
-
+    [Header("Button damage text")]
     public TextMeshProUGUI lanceDamageText;
     public TextMeshProUGUI laserDamageText;
     public TextMeshProUGUI rocketDamageText;
-   // public Sprite crosshair;
+    [Header("Timer")]
+    public float timeRemaining;
+    public TextMeshProUGUI timerText;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,12 +58,18 @@ public class ButtonUiDisplay : MonoBehaviour
         ButtonAmmoDisplay(lanceAmmoDisplay, lanceChargeButton);
         playerHealthText.text = "Health: " + playerHealth.currentPlayerHealth.ToString("F0")
             + "/" + playerHealth.maxPlayerHealth.ToString("F0");
-        CrosshairDisplay();
+        
         ShowPlayerLevel();
+        DisplayTimer();
 
         DisplayButtonDamage(laserButton, laserDamageText, "Laser Damage: ");
         DisplayButtonDamage(rocketLauncherButton, rocketDamageText, "Rocket Damage: ");
         DisplayButtonDamage(lanceChargeButton, lanceDamageText, "Lance Damage: ");
+    }
+
+    private void FixedUpdate()
+    {
+        CrosshairDisplay();
     }
 
     public void ButtonBarDisplay(Slider slider, Buttons button)
@@ -90,13 +97,13 @@ public class ButtonUiDisplay : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 250, enemyLayer))
         {
             IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-            if (damageable != null) 
-            {
-                crosshair.color = Color.red;
-            }
-            else 
+            if (damageable == null) 
             {
                 crosshair.color = Color.white;
+            }
+            else if (damageable != null)
+            {
+                crosshair.color = Color.red;
             }
         }
 
@@ -117,5 +124,21 @@ public class ButtonUiDisplay : MonoBehaviour
     public void DisplayButtonDamage(Buttons button, TextMeshProUGUI damageText, string buttonDamageText)
     { 
         damageText.text = buttonDamageText + button.buttonDamage.ToString();
+    }
+
+    public void DisplayTimer()
+    {
+        if(timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+        }
+        else if (timeRemaining < 0)
+        {
+            timeRemaining = 0;
+        }
+
+        int minutes = Mathf.FloorToInt(timeRemaining / 60);
+        int seconds = Mathf.FloorToInt(timeRemaining % 60);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

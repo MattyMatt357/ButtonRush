@@ -62,7 +62,7 @@ public class EnemyAI : MonoBehaviour
         enemyDead = false;
         gameObject.SetActive(true);
 
-        if(MainMenuOptions.isLoadedGame == false )
+        if(MainMenuOptions.isLoadedGame == false)
         {
             isPatrolling = true;
         }
@@ -174,7 +174,7 @@ public class EnemyAI : MonoBehaviour
 
         Vector3 distanceToWalkPoint = transform.position - walkingPoint;
 
-        if (distanceToWalkPoint.magnitude < 1)
+        if (distanceToWalkPoint.magnitude < 4)
         {
             setWalkPoint = false;
         }
@@ -276,13 +276,13 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-   /* public void OnDrawGizmos()
+    public void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(sphere.transform.position, playerSightRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(sphere.transform.position, playerAttackRange);
-    } */
+    } 
 
     public IEnumerator EnemyDeathCooldown()
     {

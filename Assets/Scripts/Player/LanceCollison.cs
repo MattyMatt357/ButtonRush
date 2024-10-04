@@ -7,6 +7,7 @@ public class LanceCollison : MonoBehaviour
 {
     public float lanceDamage;
     public Buttons lanceButton;
+    public ButtonDamageType lanceDamageType;
     // Start is called before the first frame update
     void Start()
     {

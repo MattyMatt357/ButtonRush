@@ -31,7 +31,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""0ea794ed-7d68-408c-833e-53bf5bc4a268"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -53,13 +53,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a6c1733-8408-4190-86fc-71dd217b7287"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": ""WASD"",
                     ""id"": ""be68fbc7-1e74-4e77-b947-c094d5ef7eab"",
-                    ""path"": ""3DVector(mode=2)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -68,30 +77,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Left"",
+                    ""name"": ""Up"",
                     ""id"": ""bea7a17c-4c03-4dea-94c9-211496e9f2c8"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""4fc728bb-7548-42b9-8aed-b634f9cd1670"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Forward"",
-                    ""id"": ""68601fe1-8d43-409e-8338-4986c838a7b1"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -101,9 +88,31 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Backward"",
-                    ""id"": ""fdde845a-397f-45bf-a060-88ec4c56fda0"",
+                    ""name"": ""left"",
+                    ""id"": ""4fc728bb-7548-42b9-8aed-b634f9cd1670"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""68601fe1-8d43-409e-8338-4986c838a7b1"",
                     ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""fdde845a-397f-45bf-a060-88ec4c56fda0"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -127,7 +136,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""a01bb416-89d6-4107-9571-f04221cd43b8"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertY=false)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -138,7 +147,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""8849bb96-7119-43e8-8ddc-677d3c070690"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertY=false)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -187,6 +196,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""DisplayPauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""563e8033-86e3-4cf3-991d-907bc7baf149"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cb7b6ac-8b45-4841-82c5-407fd8a3f9ce"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -198,6 +229,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_DisplayPauseMenu = m_Player.FindAction("DisplayPauseMenu", throwIfNotFound: true);
+        m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,6 +294,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_DisplayPauseMenu;
+    private readonly InputAction m_Player_LockOn;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -269,6 +302,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @DisplayPauseMenu => m_Wrapper.m_Player_DisplayPauseMenu;
+        public InputAction @LockOn => m_Wrapper.m_Player_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -287,6 +321,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DisplayPauseMenu.started += instance.OnDisplayPauseMenu;
             @DisplayPauseMenu.performed += instance.OnDisplayPauseMenu;
             @DisplayPauseMenu.canceled += instance.OnDisplayPauseMenu;
+            @LockOn.started += instance.OnLockOn;
+            @LockOn.performed += instance.OnLockOn;
+            @LockOn.canceled += instance.OnLockOn;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -300,6 +337,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DisplayPauseMenu.started -= instance.OnDisplayPauseMenu;
             @DisplayPauseMenu.performed -= instance.OnDisplayPauseMenu;
             @DisplayPauseMenu.canceled -= instance.OnDisplayPauseMenu;
+            @LockOn.started -= instance.OnLockOn;
+            @LockOn.performed -= instance.OnLockOn;
+            @LockOn.canceled -= instance.OnLockOn;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -322,5 +362,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnDisplayPauseMenu(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
 }

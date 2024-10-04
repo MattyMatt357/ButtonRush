@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 {
+
     public float enemyHealth;
+    public float maxEnemyHealth;
     public LevellingSystem levellingSystem;
     public int expAmount;
     public Animator animator;
@@ -17,7 +21,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
     public Rigidbody rigidbody;
     public float enemySpeed;
-   // public static int enemyKills;
+    // public static int enemyKills;
+    public ButtonDamageTypes damageTypes;
+
+    public EnemyHealthBar enemyHealthBar;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +36,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         canDamage = true;
         isEffected = false;
         rigidbody = GetComponent<Rigidbody>();
-       
+        enemyHealthBar = GetComponentInChildren<EnemyHealthBar>();
+       // enemyHealthBar.maxHealthValue = maxEnemyHealth;
+        enemyHealthBar.EnemyHealthBarDisplay(enemyHealth, maxEnemyHealth);
+
     }
 
     // Update is called once per frame
@@ -54,8 +65,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         {
             enemyHealth -= damage;
             Debug.Log(enemyHealth);
+            enemyHealthBar.EnemyHealthBarDisplay(enemyHealth, maxEnemyHealth);
+            enemyHealthBar.EnemyDamageTextDisplay(damage, transform);
 
-            
         }
     }
     /// <summary>
@@ -70,11 +82,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         animator.SetTrigger("DeathTrigger");
         GameFinished.enemyKills++;
         Debug.Log("Enemy Kills: " + GameFinished.enemyKills);
-        
-       // enemyAI.enemyState = EnemyAI.EnemyState.Death;
+
+        // enemyAI.enemyState = EnemyAI.EnemyState.Death;
 
         //GetComponent<Animator>().Play("Death");
-       // Destroy(gameObject);
+        // Destroy(gameObject);
     }
     /// <summary>
     /// Checks if 'isEffected' is true or false and if true, will trigger the effects
@@ -97,15 +109,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
             }
 
-           
-            
+
+
         }
 
-        
+
     }
 
     public static bool StatusEffectCheck(int effectChance, int randomNumber)
-    {       
+    {
         if (randomNumber >= effectChance)
         {
             return true;
@@ -113,7 +125,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         else
         {
             return false;
-        }      
+        }
     }
 
     public enum StatusEffect
@@ -136,15 +148,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
             isEffected = false;
         }
-        
+
     }
 
-   
+
 
     public IEnumerator Poisoned()
     {
         while (isEffected)
-        {                       
+        {
             for (int i = 0; i < 5; i++)
             {
                 ReceiveDamage(5);
@@ -152,7 +164,24 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
                 yield return new WaitForSeconds(3f);
             }
             isEffected = false;
-            
+
         }
     }
+    public event Action<int, float, float> onEnemyHealthBarDisplay;
+
+    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes)
+    {
+        if (canDamage)
+        {
+            enemyHealth -= damageTypes.CalculateButtonDamageResistance(damage, buttonDamageTypes);
+            Debug.Log(enemyHealth);
+            
+            enemyHealthBar.EnemyHealthBarDisplay(enemyHealth,maxEnemyHealth);
+            enemyHealthBar.EnemyDamageTextDisplay
+                ( damageTypes.CalculateButtonDamageResistance(damage, buttonDamageTypes), transform); 
+
+        }
+    }
+
+    
 }

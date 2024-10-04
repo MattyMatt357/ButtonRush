@@ -10,10 +10,13 @@ public class AmmoPickUp : MonoBehaviour
     public Buttons shieldButton;
     public Buttons lanceChargeButton;
     public PlayerHealth playerHealth;
+    public LevellingSystem levellingSystem;
     // Start is called before the first frame update
     void Start()
     {
-       playerHealth = GetComponent<PlayerHealth>();
+       playerHealth = GameObject.FindObjectOfType<PlayerHealth>();
+        levellingSystem = GameObject.FindObjectOfType<LevellingSystem>();
+        
     }
 
     // Update is called once per frame
@@ -30,20 +33,20 @@ public class AmmoPickUp : MonoBehaviour
             switch (randomButtonAmmoSelecter)
             {
                 case 0:
-                    laserButton.currentEnergy += 100;
+                    laserButton.currentEnergy += 100 * levellingSystem.level;
                     break;
                 
                 case 1:
-                    rocketLauncherButton.currentAmmo += 15;
+                    rocketLauncherButton.currentAmmo += 15 * levellingSystem.level;
                     break;
                 case 2:
-                    lanceChargeButton.currentAmmo += 15;
+                    lanceChargeButton.currentAmmo += 15 * levellingSystem.level;
                     break;
                 case 3:
-                    shieldButton.currentEnergy += 15;
+                    shieldButton.currentEnergy += 15 * levellingSystem.level;
                     break;
                 case 4:
-                    playerHealth.currentPlayerHealth += 50;
+                    playerHealth.currentPlayerHealth += 50 * levellingSystem.level;
                     break;
             }
 

@@ -11,6 +11,7 @@ public class RocketCollusion : MonoBehaviour
     //public Collider player;
     public Buttons rocketButton;
     public LayerMask enemyLayer;
+    public ButtonDamageType rocketDamageType;
    // private Collider rocketCollider;
     void Start()
     {
@@ -65,7 +66,7 @@ public class RocketCollusion : MonoBehaviour
             if (damageable != null)
             {
                 float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
-                damageable.ReceiveDamage(rocketCritDamage);
+                damageable.ReceiveDamage(rocketCritDamage, rocketDamageType);
             }
              
             IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();

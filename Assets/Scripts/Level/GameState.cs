@@ -32,7 +32,7 @@ public class GameState
     public int[] enemyStates;
     public bool[] enemyPatrolling;
     public bool[] enemyChasing;
-    public int enemyKills;
+    public static int enemyKills;
    // public Buttons laserButton;
    // public Buttons lanceButton;
    // public Buttons rocketButton;

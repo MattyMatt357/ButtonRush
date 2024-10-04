@@ -20,6 +20,10 @@ public class PauseMenu : MonoBehaviour
    // public Button LoadGameButton;
    public PlayerButtonInputs playerButtonInputs;
     public TextMeshProUGUI enemyKillsText;
+    //Initial selected buttons
+    public Button PauseMenuSaveButton;
+    public Button GameOverScreenLoadButton;
+    public Button GameFinishedGoToMainMenuButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +56,7 @@ public class PauseMenu : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
            // SaveGameButton.gameObject.SetActive(true);
+           PauseMenuSaveButton.Select();
         }
 
         else if (!pauseMenuDisplayed)
@@ -111,7 +116,7 @@ public class PauseMenu : MonoBehaviour
         DisplayingPauseMenu();
         gameOverScreen.SetActive(true);
         pauseMenu.SetActive(false);
-
+        GameOverScreenLoadButton.Select();
     }
 
     public void DisplayGameFinished()
@@ -121,8 +126,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         //SaveGameButton.gameObject.SetActive(false);
         
-         gameFinishedScreen.SetActive(true);
-
+        gameFinishedScreen.SetActive(true);
+        GameFinishedGoToMainMenuButton.Select();
     }
 
     public void MenusDeactvated()
