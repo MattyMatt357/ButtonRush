@@ -31,49 +31,55 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public Transform enemyToLockOn;
     public CinemachineFreeLook cinemachineFreeLook;
+
     public Transform cameraToLookAt;
     private bool isLockedOn =false;
     public GameObject cinemachineFollow;
+    public CinemachineVirtualCamera virtualCamera;
     void OnEnable()
     {
-        playerInputActions = new PlayerInputActions();
-        movement = playerInputActions.Player.Move;
-        playerInputActions.Player.Enable();
+       
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //Reference assignments
         rigidbody = GetComponent<Rigidbody>();
         Cursor.visible = false;
        Cursor.lockState = CursorLockMode.Locked;
         pauseMenu = FindObjectOfType<PauseMenu>();
         cinemachineFreeLook = FindObjectOfType<CinemachineFreeLook>();
         cameraToLookAt = GameObject.Find("CameraToLookAt").transform;
+        virtualCamera = GameObject.Find("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
+        //starting values
+        SetCameraPriority(10,2);
+        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //camera.transform.LookAt(Vector3.zero);
         transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y,0);
         if(isLockedOn == true)
         {
-
-           
-            // camera.transform.LookAt
-            if(isLockedOn)
+            GameObject enemyLockOn = FindClosestEnemy();
+           if(enemyLockOn != null)
             {
-                cameraRotation = new Vector2(0f,0f);
-                GameObject enemyLockOn = FindClosestEnemy();
+                Debug.Log(enemyLockOn.transform.position);
                 enemyToLockOn = enemyLockOn.transform;
                 cinemachineFollow.transform.rotation = Quaternion.LookRotation
                     (enemyToLockOn.transform.position - transform.position);
-
             }
            
+           
         }
-       
+
+        else if (!isLockedOn)
+        {
+            cinemachineFollow.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     void FixedUpdate()
@@ -83,22 +89,12 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         playerMovement = (camera.forward * playerMovement.z * forward) + (camera.right * playerMovement.x);
         playerMovement.y = 0f;
         rigidbody.AddForce(playerMovement * playerSpeed * 1.5f * Time.deltaTime, ForceMode.Acceleration);
-
-        
-       // rigidbody.AddForce(playerDirection, ForceMode.Impulse);
-       // playerDirection = Vector3.zero;
-
-       
-
     }
    
     public void OnMove(InputAction.CallbackContext context)
     {
         playerDirection = context.ReadValue<Vector2>();
-       // playerDirection = context.ReadValue<Vector2>().y * CameraRight() * playerSpeed;
     }
-
-    
 
     public void OnLook(InputAction.CallbackContext context)
     {   
@@ -108,8 +104,6 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
        
     }
-
-    
 
     public void OnDisplayPauseMenu(InputAction.CallbackContext context)
     {
@@ -124,53 +118,53 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (context.performed)
         {
             isLockedOn = true;
-            Debug.Log("Locked on enemy");
-
-            {
-                //cinemachineFreeLook.LookAt = enemyToLockOn.transform;
-                // cinemachineFreeLook.m_YAxis.m_InputAxisValue = enemyToLockOn.transform.position.z;
-                //cinemachineFreeLook.m_XAxis.m_InputAxisValue = enemyToLockOn.transform.position.x;
-            }
-
-
-            // StartCoroutine(LookAtTarget());
-            /* Vector3 lockOnPosition = new Vector3(FindClosestEnemy().transform.position.x,
-                 0, FindClosestEnemy().transform.position.z);
-             enemyToLockOn.position = lockOnPosition;
-
-            
-
-             
-         }*/
-
-            if (context.canceled)
-            {
-                //cinemachineFreeLook.LookAt = cameraToLookAt;
-                isLockedOn = false;
-            }
+            SetCameraPriority(1, 10);
+            Debug.Log("Locked on enemy");        
+        }
+        else if (context.canceled)
+        {
+            isLockedOn = false;
+            SetCameraPriority(10, 2);
         }
     }
 
     public GameObject FindClosestEnemy()
     {
-        Vector3 position = transform.position;
-        return GameObject.FindGameObjectsWithTag("Enemy").
-            OrderBy(o => (o.transform.position-position).sqrMagnitude).FirstOrDefault();
+       Vector3 position = transform.position;
+        // return GameObject.FindGameObjectsWithTag("Enemy").
+         // OrderBy(o => (o.transform.position-position).sqrMagnitude).FirstOrDefault();
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject closestEnemy = null;
+        float distance = 100;
+        foreach (GameObject enemy in enemies)
+        {
+            float distanceToEnemy = (enemy.transform.position - position).sqrMagnitude;
+            if(distanceToEnemy < distance)
+            {
+               distance = distanceToEnemy;
+                closestEnemy = enemy;
+            }
+           // Vector3 difference = enemy.transform.position - position;
+            //float distance2 = difference.sqrMagnitude;
+            //if(distance2 < distance && distance2 <= 100 && distance2 >= 1)
+            {
+              //  closestEnemy = enemy;
+                //distance = distance2;
+            }
+
+        }
+        return closestEnemy;
     }
 
-    IEnumerator LookAtTarget()
+    /// <summary>
+    /// Sets the priority of the FreeLook and Virtual cameras
+    /// </summary>
+    /// <param name="freeLookCameraPriority"></param>
+    /// <param name="virtualCameraPriority"></param>
+    public void SetCameraPriority(int freeLookCameraPriority, int virtualCameraPriority)
     {
-        GameObject enemyLockOn = FindClosestEnemy();
-        camera.transform.LookAt(enemyLockOn.transform);
-       // Vector3 target = transform.position + Vector3.up;
-       // Vector3 pivotPoint = Vector3.MoveTowards
-          //  (transform.position, target, Vector3.Distance(camera.transform.position, target) * 5);
-       // camera.position = pivotPoint;
-        //camera.transform.LookAt((enemyLockOn.transform.position + transform.position)/2);
-        //camera.position -= camera.transform.forward * 2;
-        
-       // Vector3 lockOnDirection = camera.position - enemyLockOn.transform.position;
-       // camera.rotation = Quaternion.LookRotation(lockOnDirection);
-        yield return null;
+        cinemachineFreeLook.Priority = freeLookCameraPriority;
+        virtualCamera.Priority = virtualCameraPriority;
     }
 }

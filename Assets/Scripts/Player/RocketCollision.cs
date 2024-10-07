@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CalculateDamage;
+//using CalculateDamage;
 
 public class RocketCollusion : MonoBehaviour
 {
@@ -65,8 +65,11 @@ public class RocketCollusion : MonoBehaviour
 
             if (damageable != null)
             {
-                float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
-                damageable.ReceiveDamage(rocketCritDamage, rocketDamageType);
+               // bool bools = CheckForChance(randomNumber, criticalChance);
+              //  float rocketCritDamage = GiveNumberMultipliedIfBoolTrue(bools, rocketButton.buttonDamage, 2f);
+              // float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance
+               //  (randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
+              //  damageable.ReceiveDamage(rocketCritDamage, rocketDamageType);
             }
              
             IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();
@@ -74,4 +77,6 @@ public class RocketCollusion : MonoBehaviour
 
         }
     }
+
+   
 }

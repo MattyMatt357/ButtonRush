@@ -127,7 +127,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
            // if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
-                if (Physics.Raycast(ray, out hit, laserRange))
+                if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
                 {
                 
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();

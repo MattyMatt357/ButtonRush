@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CalculateDamage;
+//using CalculateDamage;
 
 public class LanceCollison : MonoBehaviour
 {
@@ -35,8 +35,8 @@ public class LanceCollison : MonoBehaviour
             IEffectable effectable = other.gameObject.GetComponent<IEffectable>();
             if (damageable != null)
             {
-                float lanceCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, critChance, lanceButton.buttonDamage, 1.5f);
-                damageable.ReceiveDamage(lanceCritDamage);
+               // float lanceCritDamage = PlayerCriticalChance.WeaponDamageChance(randomNumber, critChance, lanceButton.buttonDamage, 1.5f);
+                //damageable.ReceiveDamage(lanceCritDamage);
             }
             effectable?.GiveStatusEffect();
            
