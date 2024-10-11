@@ -6,6 +6,7 @@ using UnityEngine;
 [Serializable]
 public class GameState
 {
+    //Player
     public Vector3 playerPosition;
     public Quaternion playerRotation;
     public float playerCurrentHealth;
@@ -15,6 +16,9 @@ public class GameState
     public int playerLevel;
     public int currentEXP;
     public int maxEXP;
+    public int levelPoints;
+    public float playerDefense;
+    public int playerDefenseUpgradeLimit;
     //Buttons
    /* public float laserCurrentEnergy;
     public float laserMaxEnergy;
@@ -33,9 +37,11 @@ public class GameState
     public bool[] enemyPatrolling;
     public bool[] enemyChasing;
     public static int enemyKills;
-   // public Buttons laserButton;
-   // public Buttons lanceButton;
-   // public Buttons rocketButton;
-   // public Buttons shieldButton;
+    // public float[] enemyDefense;
+    //public Buttons laserButton;
+    // public Buttons lanceButton;
+    // public Buttons rocketButton;
+    // public Buttons shieldButton;
+    public float timeRemaining;
 }
 

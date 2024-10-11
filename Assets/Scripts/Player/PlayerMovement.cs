@@ -23,23 +23,20 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public PauseMenu pauseMenu;
 
-    public delegate void DisplayPauseMenu();
-    public static event DisplayPauseMenu displayPauseMenu;
+    public static event Action displayPauseMenu;
 
     public InputAction movement;
     public PlayerInputActions playerInputActions;
 
     public Transform enemyToLockOn;
     public CinemachineFreeLook cinemachineFreeLook;
-
+    [Header("Lock On Camera")]
     public Transform cameraToLookAt;
     private bool isLockedOn =false;
     public GameObject cinemachineFollow;
     public CinemachineVirtualCamera virtualCamera;
-    void OnEnable()
-    {
-       
-    }
+    public GameObject enemyLockOn;
+
 
     // Start is called before the first frame update
     void Start()
@@ -64,21 +61,33 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         transform.rotation = Quaternion.Euler(0, camera.transform.eulerAngles.y,0);
         if(isLockedOn == true)
         {
-            GameObject enemyLockOn = FindClosestEnemy();
-           if(enemyLockOn != null)
+            if (enemyToLockOn == null)
+            {
+                enemyLockOn = FindClosestEnemy();
+            }
+           
+            if (enemyLockOn != null)
             {
                 Debug.Log(enemyLockOn.transform.position);
                 enemyToLockOn = enemyLockOn.transform;
                 cinemachineFollow.transform.rotation = Quaternion.LookRotation
                     (enemyToLockOn.transform.position - transform.position);
+                Debug.Log(enemyLockOn.transform.position);
             }
-           
-           
+            else if (enemyToLockOn == null)
+            {
+                isLockedOn = false;
+            }
+
+
+
         }
 
         else if (!isLockedOn)
         {
             cinemachineFollow.transform.rotation = Quaternion.Euler(0, 0, 0);
+            enemyLockOn = null;
+            enemyToLockOn = null;
         }
     }
 
@@ -119,7 +128,9 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
         {
             isLockedOn = true;
             SetCameraPriority(1, 10);
-            Debug.Log("Locked on enemy");        
+            Debug.Log("Locked on enemy");
+           
+
         }
         else if (context.canceled)
         {
@@ -131,30 +142,41 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     public GameObject FindClosestEnemy()
     {
        Vector3 position = transform.position;
-        // return GameObject.FindGameObjectsWithTag("Enemy").
-         // OrderBy(o => (o.transform.position-position).sqrMagnitude).FirstOrDefault();
+         //return GameObject.FindGameObjectsWithTag("Enemy").
+        // OrderBy(o => (o.transform.position-position).sqrMagnitude).FirstOrDefault();
+
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+      //  enemies[].sort
+           
         GameObject closestEnemy = null;
-        float distance = 100;
+
+        float distance = 100000;
+        float infinity = Mathf.Infinity;
         foreach (GameObject enemy in enemies)
         {
-            float distanceToEnemy = (enemy.transform.position - position).sqrMagnitude;
-            if(distanceToEnemy < distance)
+          float distanceToEnemy = Vector3.SqrMagnitude(enemy.transform.position - position);
+            if(distanceToEnemy <= distance && distanceToEnemy < infinity)
             {
                distance = distanceToEnemy;
-                closestEnemy = enemy;
+               closestEnemy = enemy;
             }
            // Vector3 difference = enemy.transform.position - position;
             //float distance2 = difference.sqrMagnitude;
             //if(distance2 < distance && distance2 <= 100 && distance2 >= 1)
-            {
-              //  closestEnemy = enemy;
-                //distance = distance2;
-            }
+           
+
 
         }
+       // closestEnemy = enemies.OrderBy(go => (position- go.transform.position).sqrMagnitude).FirstOrDefault();
+
+       // if(closestEnemy != enemyToLockOn)
+        {
+           // enemyToLockOn= closestEnemy.transform;
+        }
         return closestEnemy;
+
+       // if (Physics.OverlapSphereNonAlloc(position, 100f, )
     }
 
     /// <summary>
@@ -166,5 +188,18 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     {
         cinemachineFreeLook.Priority = freeLookCameraPriority;
         virtualCamera.Priority = virtualCameraPriority;
+    }
+    void OnEnable()
+    {
+        SaveSystem.onLoadCameraPriority += SetCameraPriority;
+    }
+    public void OnDisable()
+    {
+        SaveSystem.onLoadCameraPriority -= SetCameraPriority;
+    }
+
+    public void IncreasePlayerSpeed()
+    {
+        playerSpeed *= 1.1f;
     }
 }

@@ -42,7 +42,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if(!playerButtonInputs.isShieldButtonHeld)
         {
-            currentPlayerHealth -= damage * 100/(100+playerDefense);
+            currentPlayerHealth -= damage * (100/(100+playerDefense));
         }
         
     }
@@ -50,10 +50,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void OnEnable()
     {
         LevellingSystem.playerLevelUpStats += PlayerIncreaseHealth;
+        UpgradeSystem.playerDefenseUpgrade += DefenseUpgrade;
     }
     public void OnDisable()
     {
         LevellingSystem.playerLevelUpStats -= PlayerIncreaseHealth;
+        UpgradeSystem.playerDefenseUpgrade -= DefenseUpgrade;
     }
 
     public void PlayerIncreaseHealth()
@@ -62,8 +64,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         currentPlayerHealth = maxPlayerHealth;
     }
 
-    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes)
+    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes, bool isCritHit)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void DefenseUpgrade()
+    {
+        playerDefense += 1;
     }
 }

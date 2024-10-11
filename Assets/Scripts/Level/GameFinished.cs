@@ -10,7 +10,7 @@ public class GameFinished : MonoBehaviour
     public static event GameFinishedCallback GameFinish;
     public delegate void GameOverWrongKills();
     public static event GameOverWrongKills GameOverWrongEnemyKills;
-    public static int enemyKills;
+    public  int enemyKills;
     // Start is called before the first frame update
     void Start()
     {

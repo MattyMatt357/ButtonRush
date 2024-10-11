@@ -25,7 +25,18 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
     public ButtonDamageTypes damageTypes;
 
     public EnemyHealthBar enemyHealthBar;
-    
+    public static bool isLowDefenseUpgradeOn;
+    public float enemyDefense;
+    public GameFinished gameFinished;
+    public void OnEnable()
+    {
+        UpgradeSystem.enemyLowDefenseEffectUpgrade += EnemyLowDefenseEffectUpgrade;
+    }
+
+    public void OnDisable()
+    {
+        UpgradeSystem.enemyLowDefenseEffectUpgrade -= EnemyLowDefenseEffectUpgrade;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +50,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         enemyHealthBar = GetComponentInChildren<EnemyHealthBar>();
        // enemyHealthBar.maxHealthValue = maxEnemyHealth;
         enemyHealthBar.EnemyHealthBarDisplay(enemyHealth, maxEnemyHealth);
+        gameFinished = FindObjectOfType<GameFinished>();
+        if (MainMenuOptions.isLoadedGame == false)
+        {
+            isLowDefenseUpgradeOn = false;
+        }
 
     }
 
@@ -80,8 +96,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         GameObject pickUp1 = Instantiate(playerAmmoPickUp, transform.position, transform.rotation);
         GameObject pickUp2 = Instantiate(playerAmmoPickUp, transform.position, transform.rotation);
         animator.SetTrigger("DeathTrigger");
-        GameFinished.enemyKills++;
-        Debug.Log("Enemy Kills: " + GameFinished.enemyKills);
+        gameFinished.enemyKills++;
+        Debug.Log("Enemy Kills: " + gameFinished.enemyKills);
 
         // enemyAI.enemyState = EnemyAI.EnemyState.Death;
 
@@ -106,9 +122,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
                 case (StatusEffect.Poison):
                     StartCoroutine(Poisoned());
                     break;
-
             }
 
+            if (isLowDefenseUpgradeOn)
+            {
+                StartCoroutine(EnemyDefenseDebuff());
+            }
 
 
         }
@@ -130,8 +149,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
     public enum StatusEffect
     {
-        Poison,
-        Frozen
+        Poison =1,
+        Frozen= 2,
+        DefenseDebuff= 3
     }
 
     public IEnumerator Frozen()
@@ -159,7 +179,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
         {
             for (int i = 0; i < 5; i++)
             {
-                ReceiveDamage(5);
+                float poisonDamage = maxEnemyHealth * 0.05f;
+                ReceiveDamage(poisonDamage);
 
                 yield return new WaitForSeconds(3f);
             }
@@ -167,21 +188,39 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
 
         }
     }
-    public event Action<int, float, float> onEnemyHealthBarDisplay;
+    //public event Action<int, float, float> onEnemyHealthBarDisplay;
 
-    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes)
+    public void ReceiveDamage(float damage, ButtonDamageType buttonDamageType, bool isCritHit)
     {
         if (canDamage)
         {
-            enemyHealth -= damageTypes.CalculateButtonDamageResistance(damage, buttonDamageTypes);
+            enemyHealth -= damageTypes.CalculateButtonDamageResistance(damage, buttonDamageType)
+                * (100/(100+enemyDefense));
             Debug.Log(enemyHealth);
             
             enemyHealthBar.EnemyHealthBarDisplay(enemyHealth,maxEnemyHealth);
             enemyHealthBar.EnemyDamageTextDisplay
-                ( damageTypes.CalculateButtonDamageResistance(damage, buttonDamageTypes), transform); 
+                ( damageTypes.CalculateButtonDamageResistance
+                (damage, buttonDamageType), damageTypes, buttonDamageType, isCritHit); 
 
         }
     }
 
-    
+    public void EnemyLowDefenseEffectUpgrade(bool enemyDefenseDebuffUpgradeOn)
+    {
+        isLowDefenseUpgradeOn = enemyDefenseDebuffUpgradeOn;
+    }
+
+    public IEnumerator EnemyDefenseDebuff()
+    {
+        
+        while(isEffected)
+        {
+            enemyDefense *= 0.5f;
+            yield return new WaitForSeconds(20);
+            enemyDefense *= 2;
+            isEffected = false;
+        }
+       
+    }
 }

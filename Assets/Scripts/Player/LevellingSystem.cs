@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,8 @@ public class LevellingSystem : MonoBehaviour
     public int maxExp;
     public PlayerHealth playerHealth;
 
-    public delegate void PlayerLevelUpStats();
-    public static event PlayerLevelUpStats playerLevelUpStats;
+    //public delegate void PlayerLevelUpStats();
+    public static event Action playerLevelUpStats;
     // Start is called before the first frame update
     void Start()
     {

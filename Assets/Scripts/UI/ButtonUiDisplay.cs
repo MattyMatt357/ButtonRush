@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 
 public class ButtonUiDisplay : MonoBehaviour
@@ -39,6 +40,14 @@ public class ButtonUiDisplay : MonoBehaviour
     [Header("Timer")]
     public float timeRemaining;
     public TextMeshProUGUI timerText;
+    [Header("Upgrades text")]
+    public TextMeshProUGUI playerDefenseText;
+    public TextMeshProUGUI playerSpeedText;
+    public PlayerMovement playerMovement;
+    public TextMeshProUGUI levelPointsText;
+    public UpgradeSystem upgradeSystem;
+
+    public static event Action runOutOfTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +55,13 @@ public class ButtonUiDisplay : MonoBehaviour
         levellingSystem = FindObjectOfType<LevellingSystem>();
         //camera = FindObjectOfType<Camera>();
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        upgradeSystem = FindObjectOfType<UpgradeSystem>();
+
+        if (MainMenuOptions.isLoadedGame == false) 
+        {
+            timeRemaining = 600;
+        }
     }
 
     // Update is called once per frame
@@ -65,6 +81,15 @@ public class ButtonUiDisplay : MonoBehaviour
         DisplayButtonDamage(laserButton, laserDamageText, "Laser Damage: ");
         DisplayButtonDamage(rocketLauncherButton, rocketDamageText, "Rocket Damage: ");
         DisplayButtonDamage(lanceChargeButton, lanceDamageText, "Lance Damage: ");
+        DisplayPlayerUpgradeStats(playerDefenseText, playerHealth.playerDefense, "Player Defense: ");
+        DisplayPlayerUpgradeStats(playerSpeedText, playerMovement.playerSpeed, "Player Speed: ");
+        DisplayPlayerUpgradeStats(levelPointsText, upgradeSystem.levelPoints, "Level Points: ");
+
+        if (Input.GetKey(KeyCode.L))
+        {
+            timeRemaining = 10f;
+        }
+        
     }
 
     private void FixedUpdate()
@@ -107,7 +132,6 @@ public class ButtonUiDisplay : MonoBehaviour
             }
         }
 
-        
 
         
     }
@@ -123,7 +147,7 @@ public class ButtonUiDisplay : MonoBehaviour
 
     public void DisplayButtonDamage(Buttons button, TextMeshProUGUI damageText, string buttonDamageText)
     { 
-        damageText.text = buttonDamageText + button.buttonDamage.ToString();
+        damageText.text = buttonDamageText + button.buttonDamage.ToString("F0");
     }
 
     public void DisplayTimer()
@@ -132,13 +156,19 @@ public class ButtonUiDisplay : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
         }
-        else if (timeRemaining < 0)
+        else if (timeRemaining <= 0)
         {
             timeRemaining = 0;
+            runOutOfTime?.Invoke();
         }
 
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void DisplayPlayerUpgradeStats(TextMeshProUGUI upgradeStatsText, float statToDisplay, string statName)
+    {
+        upgradeStatsText.text = statName + statToDisplay.ToString("F0");
     }
 }

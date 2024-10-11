@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameplayLibrary.CalculateChance;
 //using CalculateDamage;
 
 public class RocketCollusion : MonoBehaviour
@@ -12,17 +13,28 @@ public class RocketCollusion : MonoBehaviour
     public Buttons rocketButton;
     public LayerMask enemyLayer;
     public ButtonDamageType rocketDamageType;
+    public Rigidbody rocketRigidbody;
+    public Transform rocketSpawn;
    // private Collider rocketCollider;
     void Start()
     {
        // player = GameObject.Find("Player").GetComponent<Collider>();
        // rocketCollider = this.GetComponent<Collider>();
+       rocketRigidbody = GetComponent<Rigidbody>();
+        rocketSpawn = GameObject.Find("RocketSpawn").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Physics.IgnoreCollision(player, rocketCollider, true);
+        // Physics.IgnoreCollision(player, rocketCollider, true);
+        rocketRigidbody.AddForce(rocketSpawn.forward * 5, ForceMode.Impulse);
+        //rocketRigidbody.velocity = Vector3.zero;
+
+    }
+
+    private void FixedUpdate()
+    {
         
     }
 
@@ -35,7 +47,7 @@ public class RocketCollusion : MonoBehaviour
             RocketDamage(other.contacts[0].point);
             
         }
-        Destroy(gameObject);
+       gameObject.SetActive(false);
 
     }
 
@@ -65,11 +77,10 @@ public class RocketCollusion : MonoBehaviour
 
             if (damageable != null)
             {
-               // bool bools = CheckForChance(randomNumber, criticalChance);
-              //  float rocketCritDamage = GiveNumberMultipliedIfBoolTrue(bools, rocketButton.buttonDamage, 2f);
-              // float rocketCritDamage = PlayerCriticalChance.WeaponDamageChance
-               //  (randomNumber, criticalChance, rocketButton.buttonDamage, 2f);
-              //  damageable.ReceiveDamage(rocketCritDamage, rocketDamageType);
+                bool checkForCriticalHit = PlayerCriticalChance.CheckForChance(randomNumber, criticalChance);
+                float rocketCritDamage = PlayerCriticalChance.GiveNumberMultipliedIfBoolTrue
+                    (checkForCriticalHit, rocketButton.buttonDamage, 2f);
+                damageable.ReceiveDamage(rocketCritDamage, rocketDamageType, checkForCriticalHit);
             }
              
             IEffectable effectable = collider.gameObject.GetComponent<IEffectable>();

@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDamageable
 {
     void ReceiveDamage(float damage);
-    void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes);
+    void ReceiveDamage(float damage, ButtonDamageType buttonDamageTypes, bool isCritHit);
 }

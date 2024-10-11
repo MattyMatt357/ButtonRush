@@ -24,6 +24,10 @@ public class PauseMenu : MonoBehaviour
     public Button PauseMenuSaveButton;
     public Button GameOverScreenLoadButton;
     public Button GameFinishedGoToMainMenuButton;
+
+    public GameObject upgradeMenu;
+    public Button firstUpgradeButton;
+    public GameFinished gameFinished;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,12 +41,14 @@ public class PauseMenu : MonoBehaviour
         // LoadGameButton.gameObject.SetActive(false);
         Time.timeScale = 1f;
         playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
+        upgradeMenu.SetActive(false);
+        gameFinished = FindObjectOfType<GameFinished>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemyKillsText.text = "Enemy Kills: " + GameFinished.enemyKills.ToString();
+        enemyKillsText.text = "Enemy Kills: " + gameFinished.enemyKills.ToString();
 
         playerExpDisplay.text = levellingSystem.currentExp.ToString() + "/" + levellingSystem.maxExp.ToString();
     }
@@ -62,6 +68,7 @@ public class PauseMenu : MonoBehaviour
         else if (!pauseMenuDisplayed)
         {
             pauseMenu.SetActive(false);
+            upgradeMenu.SetActive(false);
             Time.timeScale = 1f;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -92,6 +99,8 @@ public class PauseMenu : MonoBehaviour
         GameFinished.GameFinish += DisplayGameFinished;
         SaveSystem.deactivateMenus += MenusDeactvated;
         GameFinished.GameOverWrongEnemyKills += DisplayGameOver;
+        UpgradeSystem.backToPauseMenu += BackToPauseMenu;
+        ButtonUiDisplay.runOutOfTime += DisplayGameOver;
     }
 
     public void OnDisable()
@@ -101,6 +110,8 @@ public class PauseMenu : MonoBehaviour
         GameFinished.GameFinish -= DisplayGameFinished;
         SaveSystem.deactivateMenus -= MenusDeactvated;
         GameFinished.GameOverWrongEnemyKills -= DisplayGameOver;
+        UpgradeSystem.backToPauseMenu -= BackToPauseMenu;
+        ButtonUiDisplay.runOutOfTime -= DisplayGameOver;
     }
 
     public void ExitToMainMenu()
@@ -140,5 +151,19 @@ public class PauseMenu : MonoBehaviour
         playerButtonInputs.canUseButtons = true;
     }
 
-    
+    public void DisplayUpgradeMenu()
+    {
+        pauseMenu.SetActive(false);
+        upgradeMenu.SetActive(true);
+        firstUpgradeButton.Select();
+       // if ()
+
+    }
+
+    public void BackToPauseMenu()
+    {
+        pauseMenu.SetActive(true);
+        upgradeMenu.SetActive(false);
+        PauseMenuSaveButton.Select();
+    }
 }

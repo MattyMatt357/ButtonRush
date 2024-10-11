@@ -52,16 +52,48 @@ public class EnemyHealthBar : MonoBehaviour
        
     }
 
-    public void EnemyDamageTextDisplay(float damageToShow, Transform enemy)
+    public void EnemyDamageTextDisplay(float damageToShow,
+        ButtonDamageTypes buttonDamageTypes, ButtonDamageType damageType, bool isCritHit)
     {
         if (uiDamageTextPrefab != null)
         {
            // Quaternion enemyRotation = enemy.rotation;
            // enemyRotation.x = 0;
             //enemyRotation.z = 0;
-            uiDamageTextObject = Instantiate(uiDamageTextPrefab, enemy.position, Quaternion.identity);
+            uiDamageTextObject = Instantiate(uiDamageTextPrefab,
+                enemy.position + new Vector3(15,15,0), Quaternion.identity);
            damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
-            damageText.text = damageToShow.ToString("F0");
+
+            for (int i = 0; i< buttonDamageTypes.weaknessesAndResistances.Count; i++) 
+            {
+               if (buttonDamageTypes.weaknessesAndResistances[i].buttonDamageType == damageType)
+                {
+                    if(isCritHit == true)
+                    {
+                        damageText.color = Color.red;
+                    }
+                    else if (isCritHit == false)
+                    {
+                        damageText.color = Color.white;
+                    }
+                    if (buttonDamageTypes.weaknessesAndResistances[i].buttonResistances == ButtonResistances.Neutral)
+                    {
+                        damageText.text = damageToShow.ToString("F0");
+                    }
+                    else if (buttonDamageTypes.weaknessesAndResistances[i].buttonResistances == ButtonResistances.Weak)
+                    {
+                        damageText.text = "Weak " + damageToShow.ToString("F0");
+                    }
+                    else if (buttonDamageTypes.weaknessesAndResistances[i].buttonResistances == ButtonResistances.Resist)
+                    {
+                        damageText.text = "Resist " + damageToShow.ToString("F0");
+                    }
+                }
+
+
+            }
+           // if(buttonDamageTypes.weaknessesAndResistances)
+           
         }
         
        
@@ -69,5 +101,27 @@ public class EnemyHealthBar : MonoBehaviour
         
     }
 
-    
+    public void EnemyDamageTextDisplay(float damageToShow, Transform enemy)
+    {
+        if (uiDamageTextPrefab != null)
+        {
+            // Quaternion enemyRotation = enemy.rotation;
+            // enemyRotation.x = 0;
+            //enemyRotation.z = 0;
+            uiDamageTextObject = Instantiate(uiDamageTextPrefab,
+                enemy.position + new Vector3(15, 15, 0), Quaternion.identity);
+            damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
+
+           
+            damageText.text = damageToShow.ToString("F0");
+        }
+    }
 }
+
+
+       
+
+    
+
+
+

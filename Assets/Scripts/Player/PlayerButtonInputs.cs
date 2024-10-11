@@ -61,6 +61,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public Image crosshair;
 
     public ButtonDamageType laserDamageType;
+    public ObjectPooling objectPooling;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +72,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         canLanceCharge = true;
         equippedButton = EquippedButton.Laser;
         canUseButtons = true;
+        objectPooling = ObjectPooling.instance;
        // particleSystem = GameObject.Find("LaserStart").GetComponent<ParticleSystem>();
 
         //Button stats at start
@@ -101,7 +103,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     // Update is called once per frame
     void Update()
     {
-        rayHit = Camera.main.ScreenPointToRay(Input.mousePosition);
+        rayHit = playerCamera.ScreenPointToRay(Input.mousePosition);
         // RocketLauncherRocketSpawn.transform.position.x = rocketLauncher.transform.rotation.x;   
 
         if (isLaserButtonHeld)
@@ -135,7 +137,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
                 if (damageable != null)
                 {
-                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime, laserDamageType);
+                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime, laserDamageType, false);
                 }
                // else if (damageable == null)
                 {
@@ -212,12 +214,20 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                GameObject rockets = Instantiate(rocket, RocketLauncherRocketSpawn.position,
-                    Quaternion.LookRotation(rayHit.direction));
+                GameObject rockets = objectPooling.GetRocketFromPool();
+                if (rockets != null)
+                {
+                    rockets.transform.position = RocketLauncherRocketSpawn.position;
+                    rockets.transform.rotation = Quaternion.LookRotation(rayHit.origin);
+                    rockets.SetActive(true);
+                    StartCoroutine(DeactivateRocketAfter12Seconds(rockets));
+
+                }
+                    //Instantiate(rocket, RocketLauncherRocketSpawn.position,
+                    //Quaternion.LookRotation(rayHit.direction));
 
                 
-                rockets.GetComponent<Rigidbody>().AddForce(RocketLauncherRocketSpawn.forward * rocketForce,
-                    ForceMode.Impulse);
+                rockets.GetComponent<Rigidbody>().velocity = Vector3.forward * 5;
                 rocketLauncherButton.currentAmmo--;
                 
 
@@ -374,15 +384,18 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public void IncreaseButtonStats()
     {
         //Increasing button damage and max ammo/energy       
-       _= shieldButton ^ 10;
-        _ = laserButton ^ 50f;
+        shieldButton ^= 10;
+        laserButton ^= 50f;
         // Increasing button damage
         lanceButton += 10;
         rocketLauncherButton += 5;
-       // laserButton += 5;
-        
-       
-       
+       // laserButton += 5         
+    }
+
+    public IEnumerator DeactivateRocketAfter12Seconds(GameObject rocket)
+    {
+        yield return new WaitForSeconds(12f);
+        rocket.SetActive(false);
 
     }
 }
