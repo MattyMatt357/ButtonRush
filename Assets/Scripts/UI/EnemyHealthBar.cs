@@ -36,9 +36,9 @@ public class EnemyHealthBar : MonoBehaviour
         if (uiDamageTextObject != null)
         {
             Vector3 cameraRotation = new Vector3(0, camera.transform.position.y,0);
-            uiDamageTextObject.transform.rotation =
+           // uiDamageTextObject.transform.rotation = camera.transform.rotation;
                 
-          Quaternion.LookRotation(uiDamageTextObject.transform.position - camera.transform.position);
+          //Quaternion.LookRotation((uiDamageTextObject.transform.position - camera.transform.position).normalized);
             //uiDamageTextObject.transform.Rotate(0, uiDamageTextObject.transform.rotation.y,0);
         }
        
@@ -57,11 +57,13 @@ public class EnemyHealthBar : MonoBehaviour
     {
         if (uiDamageTextPrefab != null)
         {
-           // Quaternion enemyRotation = enemy.rotation;
-           // enemyRotation.x = 0;
+            // Quaternion enemyRotation = enemy.rotation;
+            // enemyRotation.x = 0;
             //enemyRotation.z = 0;
+            float randomX = Random.Range(15, 25);
+            float randomY = Random.Range(25, 35);
             uiDamageTextObject = Instantiate(uiDamageTextPrefab,
-                enemy.position + new Vector3(15,15,0), Quaternion.identity);
+                enemy.position + new Vector3(randomX, randomY, 0), Quaternion.identity);
            damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
 
             for (int i = 0; i< buttonDamageTypes.weaknessesAndResistances.Count; i++) 
@@ -105,11 +107,13 @@ public class EnemyHealthBar : MonoBehaviour
     {
         if (uiDamageTextPrefab != null)
         {
+            float randomX = Random.Range(15,25);
+            float randomY = Random.Range(15, 25);
             // Quaternion enemyRotation = enemy.rotation;
             // enemyRotation.x = 0;
             //enemyRotation.z = 0;
             uiDamageTextObject = Instantiate(uiDamageTextPrefab,
-                enemy.position + new Vector3(15, 15, 0), Quaternion.identity);
+                enemy.position + new Vector3(randomX, randomY, 0), Quaternion.identity);
             damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
 
            

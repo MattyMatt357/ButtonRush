@@ -197,7 +197,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
             enemyHealth -= damageTypes.CalculateButtonDamageResistance(damage, buttonDamageType)
                 * (100/(100+enemyDefense));
             Debug.Log(enemyHealth);
-            
+            enemyAI.hasBeenAttacked = true;
             enemyHealthBar.EnemyHealthBarDisplay(enemyHealth,maxEnemyHealth);
             enemyHealthBar.EnemyDamageTextDisplay
                 ( damageTypes.CalculateButtonDamageResistance

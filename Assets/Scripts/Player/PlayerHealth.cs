@@ -71,6 +71,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void DefenseUpgrade()
     {
-        playerDefense += 1;
+        playerDefense += 2;
     }
 }

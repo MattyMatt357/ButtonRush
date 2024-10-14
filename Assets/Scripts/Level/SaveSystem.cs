@@ -43,6 +43,7 @@ public class SaveSystem : MonoBehaviour
     public UpgradeSystem upgradeSystem;
     public ButtonUiDisplay buttonUiDisplay;
     public GameFinished gameFinished;
+    public PlayerMovement playerMovement;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +58,7 @@ public class SaveSystem : MonoBehaviour
         upgradeSystem = FindObjectOfType<UpgradeSystem>();
         buttonUiDisplay = FindObjectOfType<ButtonUiDisplay>();
         gameFinished = FindObjectOfType<GameFinished>();
-
+        playerMovement = FindObjectOfType<PlayerMovement>();
 
         //Orders array
         Array.Sort(enemies, (a,b) => { return a.name.CompareTo(b.name); });
@@ -98,12 +99,16 @@ public class SaveSystem : MonoBehaviour
         gameState.playerRotation = playerTransform.rotation;
         gameState.cameraRotation = playerCamera.rotation;
         gameState.cameraPosition = playerCamera.position;
-        //Player level
+        //Player level and upgrade values
         gameState.playerLevel = levellingSystem.level;
         gameState.maxEXP = levellingSystem.maxExp;
         gameState.currentEXP = levellingSystem.currentExp;
         gameState.playerDefense = playerHealth.playerDefense;
-       gameState.playerDefenseUpgradeLimit = upgradeSystem.playerDefenseIncreaseLimit;
+       gameState.playerDefenseUpgradeLevel = upgradeSystem.playerDefenseUpgradeLevel;
+        gameState.buttonsUpgradeLevel = upgradeSystem.buttonsUpgradeLevel;
+        gameState.playerSpeedUpgradeLevel = upgradeSystem.playerSpeedUpgradeLevel;
+        gameState.playerSpeed = playerMovement.playerSpeed;
+        
        gameState.timeRemaining = buttonUiDisplay.timeRemaining;
         //Buttons
       //  gameState.lanceCurrentAmmo = lanceChargeButton.currentAmmo;
@@ -134,6 +139,8 @@ public class SaveSystem : MonoBehaviour
         }
         GameState.enemyKills = gameFinished.enemyKills;
         gameState.levelPoints = upgradeSystem.levelPoints;
+        gameState.hasEnemyDebuffUpgrade = upgradeSystem.hasEnemyDebuffUpgrade;
+        //gameState.hasEnemyDebuffUpgrade = EnemyHealth.isLowDefenseUpgradeOn;
         savingSystem.SaveJson(gameState, "/GameData");
        
     }
@@ -154,7 +161,11 @@ public class SaveSystem : MonoBehaviour
         levellingSystem.maxExp = gameState.maxEXP;
         playerHealth.playerDefense = gameState.playerDefense;
         upgradeSystem.levelPoints = gameState.levelPoints;
-        upgradeSystem.playerDefenseIncreaseLimit = gameState.playerDefenseUpgradeLimit;
+        upgradeSystem.playerDefenseUpgradeLevel = gameState.playerDefenseUpgradeLevel;
+        upgradeSystem.playerSpeedUpgradeLevel = gameState.playerSpeedUpgradeLevel;
+        upgradeSystem.buttonsUpgradeLevel = gameState.buttonsUpgradeLevel;
+        playerMovement.playerSpeed = gameState.playerSpeed;
+
         //Buttons
         // lanceChargeButton.maxAmmo = gameState.lanceMaxAmmo;
         //lanceChargeButton.currentAmmo = gameState.lanceCurrentAmmo;
@@ -181,9 +192,12 @@ public class SaveSystem : MonoBehaviour
         }
          gameFinished.enemyKills = GameState.enemyKills;
 
+        upgradeSystem.hasEnemyDebuffUpgrade = gameState.hasEnemyDebuffUpgrade;
+        EnemyHealth.isLowDefenseUpgradeOn = gameState.hasEnemyDebuffUpgrade;
+        buttonUiDisplay.timeRemaining = gameState.timeRemaining;
         deactivateMenus?.Invoke();
 
-        buttonUiDisplay.timeRemaining = gameState.timeRemaining;
+        
         onLoadCameraPriority?.Invoke(10,2);
 
 

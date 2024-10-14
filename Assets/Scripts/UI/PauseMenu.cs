@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -26,7 +27,12 @@ public class PauseMenu : MonoBehaviour
     public Button GameFinishedGoToMainMenuButton;
 
     public GameObject upgradeMenu;
-    public Button firstUpgradeButton;
+    [FormerlySerializedAs("firstUpgradeButton")]
+    public Button playerDefenseUpgradeButton;
+    public Button playerSpeedUpgradeButton;
+    public Toggle enemyDebuffToggle;
+    public Button buttonsUpgradeButton;
+    public Button backToPauseMenuButton;
     public GameFinished gameFinished;
     // Start is called before the first frame update
     void Start()
@@ -155,7 +161,29 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         upgradeMenu.SetActive(true);
-        firstUpgradeButton.Select();
+        if(playerDefenseUpgradeButton.interactable == true)
+        {
+            playerDefenseUpgradeButton.Select();
+        }
+        else if (playerDefenseUpgradeButton.interactable == false)
+        {
+            playerSpeedUpgradeButton.Select();
+        }
+        else if (playerSpeedUpgradeButton.interactable == false)
+        {
+            enemyDebuffToggle.Select();
+        }
+        else if (enemyDebuffToggle.interactable == false)
+        {
+            buttonsUpgradeButton.Select();
+        }
+        else if (buttonsUpgradeButton.interactable == false)
+        {
+            backToPauseMenuButton.Select();
+        }
+
+        
+       
        // if ()
 
     }

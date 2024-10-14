@@ -43,6 +43,7 @@ public class EnemyAI : MonoBehaviour
     public EnemyHealth enemyHealth;
     [HideInInspector]
     public bool enemyDead;
+    public bool hasBeenAttacked;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +82,7 @@ public class EnemyAI : MonoBehaviour
         {
             isPatrolling = true;
             isChasing = false;
+            hasBeenAttacked = false;
             if (isPatrolling && !isChasing)
             {
                 enemyState = EnemyState.Patrolling;
@@ -94,7 +96,7 @@ public class EnemyAI : MonoBehaviour
             enemyState = EnemyState.Detecting;
         }
 
-        if (playerInSightRange && !playerInAttackRange && isChasing) 
+        if (playerInSightRange && !playerInAttackRange && isChasing || hasBeenAttacked == true) 
         {
             enemyState = EnemyState.Chasing;
         }

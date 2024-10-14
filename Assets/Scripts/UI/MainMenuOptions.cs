@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using GameplayLibrary.ChangingLevels;
 
 
 public class MainMenuOptions : MonoBehaviour
@@ -12,11 +13,13 @@ public class MainMenuOptions : MonoBehaviour
     public GameObject loadScreen;
     public Slider loadBar;
     public static bool isLoadedGame;
+    public ChangeScenes changeScenes;
     // Start is called before the first frame update
     void Start()
     {
         levelTransition = GetComponent<LevelTransition>();
         loadScreen.SetActive(false);
+        changeScenes = GetComponent<ChangeScenes>();
     }
 
     // Update is called once per frame
@@ -28,14 +31,14 @@ public class MainMenuOptions : MonoBehaviour
     public void StartNewGame()
     {
         isLoadedGame = false;
-        StartCoroutine(levelTransition.LevelChange("Level 1", loadScreen, loadBar));
-        
+        StartCoroutine(changeScenes.LevelChangeWithLoadingScreen("Level 1", loadScreen, loadBar));
+
     }
 
     public void LoadCurrentGame()
     {
         isLoadedGame = true;
-        StartCoroutine(levelTransition.LevelChange("Level 1", loadScreen, loadBar));
+        StartCoroutine(changeScenes.LevelChangeWithLoadingScreen("Level 1", loadScreen, loadBar));
     }
 
     public void ExitGame()

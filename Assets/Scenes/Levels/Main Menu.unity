@@ -1628,6 +1628,7 @@ GameObject:
   - component: {fileID: 1921093727}
   - component: {fileID: 1921093731}
   - component: {fileID: 1921093732}
+  - component: {fileID: 1921093733}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1738,6 +1739,7 @@ MonoBehaviour:
   levelTransition: {fileID: 1921093732}
   loadScreen: {fileID: 270547425}
   loadBar: {fileID: 15930941}
+  changeScenes: {fileID: 1921093733}
 --- !u!114 &1921093732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1748,6 +1750,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a38b929e4f7db643a6f3a5b1f1e34ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1921093733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921093726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -199093052, guid: aae5ff5d36f5fb948a71cb02e81106cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1965951889

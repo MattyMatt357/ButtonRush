@@ -192,10 +192,12 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     void OnEnable()
     {
         SaveSystem.onLoadCameraPriority += SetCameraPriority;
+        UpgradeSystem.playerSpeedUpgrade += IncreasePlayerSpeed;
     }
     public void OnDisable()
     {
         SaveSystem.onLoadCameraPriority -= SetCameraPriority;
+        UpgradeSystem.playerSpeedUpgrade -= IncreasePlayerSpeed;
     }
 
     public void IncreasePlayerSpeed()

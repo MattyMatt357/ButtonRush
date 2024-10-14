@@ -368,12 +368,14 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     {
         PlayerMovement.displayPauseMenu += EnableButtons;
         LevellingSystem.playerLevelUpStats += IncreaseButtonStats;
+        UpgradeSystem.buttonsUpgrade += IncreaseButtonStats;
     }
 
     public void OnDisable()
     {
         PlayerMovement.displayPauseMenu -= EnableButtons;
         LevellingSystem.playerLevelUpStats -= IncreaseButtonStats;
+        UpgradeSystem.buttonsUpgrade -= IncreaseButtonStats;
     }
 
     public void EnableButtons()

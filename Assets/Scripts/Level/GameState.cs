@@ -18,7 +18,10 @@ public class GameState
     public int maxEXP;
     public int levelPoints;
     public float playerDefense;
-    public int playerDefenseUpgradeLimit;
+    public int playerDefenseUpgradeLevel;
+    public int playerSpeedUpgradeLevel;
+    public int buttonsUpgradeLevel;
+    public float playerSpeed;
     //Buttons
    /* public float laserCurrentEnergy;
     public float laserMaxEnergy;
@@ -43,5 +46,7 @@ public class GameState
     // public Buttons rocketButton;
     // public Buttons shieldButton;
     public float timeRemaining;
+    public bool hasEnemyDebuffUpgrade;
+    public bool enemyHasBeenAttacked;
 }
 
