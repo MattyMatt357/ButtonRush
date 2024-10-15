@@ -55,7 +55,7 @@ public class EnemyAI : MonoBehaviour
         detectingTime = 0.0f;
         animator = GetComponent<Animator>();
         enemyAttacking = false;
-        isChasing = false;
+       
         sphere = transform.Find("SpheresCentre");
         
        // enemyTransfrom = GameObject.Find("oritentation").transform;
@@ -66,6 +66,8 @@ public class EnemyAI : MonoBehaviour
         if(MainMenuOptions.isLoadedGame == false)
         {
             isPatrolling = true;
+            hasBeenAttacked = false;
+            isChasing=false;
         }
     }
 

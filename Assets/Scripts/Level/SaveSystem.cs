@@ -136,6 +136,7 @@ public class SaveSystem : MonoBehaviour
             gameState.enemyStates[i] = (int) enemyAIs[i].enemyState;          
             gameState.enemyPatrolling[i] = enemyAIs[i].isPatrolling;
             gameState.enemyChasing[i] = enemyAIs[i].isChasing;
+            gameState.enemyBeenAttacked[i] = enemyAIs[i].hasBeenAttacked;
         }
         GameState.enemyKills = gameFinished.enemyKills;
         gameState.levelPoints = upgradeSystem.levelPoints;
@@ -189,6 +190,7 @@ public class SaveSystem : MonoBehaviour
             enemyAIs[i].enemyState = (EnemyAI.EnemyState) gameState.enemyStates[i];
             enemyAIs[i].isPatrolling = gameState.enemyPatrolling[i];
             enemyAIs[i].isChasing = gameState.enemyChasing[i];
+            enemyAIs[i].hasBeenAttacked = gameState.enemyBeenAttacked[i];
         }
          gameFinished.enemyKills = GameState.enemyKills;
 

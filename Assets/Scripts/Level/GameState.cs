@@ -40,6 +40,7 @@ public class GameState
     public bool[] enemyPatrolling;
     public bool[] enemyChasing;
     public static int enemyKills;
+    public bool[] enemyBeenAttacked;
     // public float[] enemyDefense;
     //public Buttons laserButton;
     // public Buttons lanceButton;
