@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
+using GameplayLibrary.ChangingLevels;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PauseMenu : MonoBehaviour
     bool pauseMenuDisplayed;
     public TextMeshProUGUI playerExpDisplay;
     public LevellingSystem levellingSystem;
-    public LevelTransition levelTransition;
+   // public LevelTransition levelTransition;
     public GameObject loadScreen;
     public Slider loadBar;
     //GameFinished/Over screens
@@ -34,13 +35,16 @@ public class PauseMenu : MonoBehaviour
     public Button buttonsUpgradeButton;
     public Button backToPauseMenuButton;
     public GameFinished gameFinished;
+
+    public ChangeScenes changeScenes;
+
     // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
         pauseMenuDisplayed = false;
         levellingSystem = FindObjectOfType<LevellingSystem>();
-        levelTransition = GetComponent<LevelTransition>();
+        //levelTransition = GetComponent<LevelTransition>();
         gameFinishedScreen.SetActive(false);
         gameOverScreen.SetActive(false);
         // SaveGameButton.gameObject.SetActive(false);
@@ -48,6 +52,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         playerButtonInputs = FindObjectOfType<PlayerButtonInputs>();
         upgradeMenu.SetActive(false);
+        changeScenes = FindObjectOfType<ChangeScenes>();
         gameFinished = FindObjectOfType<GameFinished>();
     }
 
@@ -122,7 +127,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ExitToMainMenu()
     {
-        StartCoroutine(levelTransition.LevelChange("Main Menu", loadScreen, loadBar));
+        StartCoroutine(changeScenes.LevelChangeWithLoadingScreen("Main Menu", loadScreen, loadBar));
     }
 
     
@@ -193,5 +198,11 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         upgradeMenu.SetActive(false);
         PauseMenuSaveButton.Select();
+    }
+
+    public void LoadSavedGame()
+    {
+        MainMenuOptions.isLoadedGame = true;
+        StartCoroutine(changeScenes.LevelChangeWithLoadingScreen("Level 1", loadScreen, loadBar));
     }
 }

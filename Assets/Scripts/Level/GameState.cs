@@ -49,5 +49,8 @@ public class GameState
     public float timeRemaining;
     public bool hasEnemyDebuffUpgrade;
     public bool enemyHasBeenAttacked;
+
+   // public Dictionary<int, Vector3> savedAmmoPickUpsPositions = new Dictionary<int, Vector3>();
+    //public Dictionary<int, Quaternion> savedAmmoPickUpsRotations = new Dictionary<int, Quaternion>();
 }
 

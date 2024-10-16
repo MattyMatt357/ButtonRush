@@ -36,7 +36,7 @@ public class LanceCollison : MonoBehaviour
             IEffectable effectable = other.gameObject.GetComponent<IEffectable>();
             if (damageable != null)
             {
-                bool checkForCriticalHit = PlayerCriticalChance.CheckForChance(99, critChance);
+                bool checkForCriticalHit = PlayerCriticalChance.CheckForChance(randomNumber, critChance);
                 float lanceCritDamage = PlayerCriticalChance.GiveNumberMultipliedIfBoolTrue
                     (checkForCriticalHit, lanceButton.buttonDamage, 2f);
                 damageable.ReceiveDamage(lanceCritDamage, lanceDamageType, checkForCriticalHit);

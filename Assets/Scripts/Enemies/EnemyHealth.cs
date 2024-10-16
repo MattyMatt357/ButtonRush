@@ -199,11 +199,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
             Debug.Log(enemyHealth);
             enemyAI.hasBeenAttacked = true;
             enemyHealthBar.EnemyHealthBarDisplay(enemyHealth,maxEnemyHealth);
-            enemyHealthBar.EnemyDamageTextDisplay
-                ( damageTypes.CalculateButtonDamageResistance
-                (damage, buttonDamageType), damageTypes, buttonDamageType, isCritHit); 
 
-        }
+          
+                enemyHealthBar.EnemyDamageTextDisplay
+                (damageTypes.CalculateButtonDamageResistance
+                (damage, buttonDamageType), damageTypes, buttonDamageType, isCritHit);
+            
+      }
     }
 
     public void EnemyLowDefenseEffectUpgrade(bool enemyDefenseDebuffUpgradeOn)

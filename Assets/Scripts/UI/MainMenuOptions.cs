@@ -9,7 +9,7 @@ using GameplayLibrary.ChangingLevels;
 
 public class MainMenuOptions : MonoBehaviour
 {
-    public LevelTransition levelTransition;
+    //public LevelTransition levelTransition;
     public GameObject loadScreen;
     public Slider loadBar;
     public static bool isLoadedGame;
@@ -17,7 +17,7 @@ public class MainMenuOptions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levelTransition = GetComponent<LevelTransition>();
+        //levelTransition = GetComponent<LevelTransition>();
         loadScreen.SetActive(false);
         changeScenes = GetComponent<ChangeScenes>();
     }

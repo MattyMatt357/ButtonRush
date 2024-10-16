@@ -30588,6 +30588,7 @@ MonoBehaviour:
   playerLocation: {x: 0, y: 0, z: 0}
   enemyHealth: {fileID: 3331107337391837482}
   enemyDead: 0
+  hasBeenAttacked: 0
 --- !u!114 &3331107337391837482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30614,6 +30615,8 @@ MonoBehaviour:
   enemySpeed: 0
   damageTypes: {fileID: 0}
   enemyHealthBar: {fileID: 0}
+  enemyDefense: 0
+  gameFinished: {fileID: 0}
 --- !u!195 &6475067915606119229
 NavMeshAgent:
   m_ObjectHideFlags: 0

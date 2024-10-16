@@ -52,6 +52,7 @@ public class UpgradeSystem : MonoBehaviour
     void Update()
     {
         // playerDefenseUpgradeButton
+        /*
         if (playerDefenseUpgradeLevel < playerDefenseIncreaseLimit)
         {
             playerDefenseUpgradeButton.interactable = true;
@@ -75,23 +76,23 @@ public class UpgradeSystem : MonoBehaviour
         if (hasEnemyDebuffUpgrade == false)
         {
             enemyDefenseDebuffToggle.interactable = true;
-        }
-        else if (hasEnemyDebuffUpgrade == true)
+        } */
+     //   else if (hasEnemyDebuffUpgrade == true)
         {
-            enemyDefenseDebuffToggle.interactable = false;
+      //      enemyDefenseDebuffToggle.interactable = false;
         }
 
        
         levelPoints = Mathf.Clamp(levelPoints, 0, 15);
 
 
-        if (buttonsUpgradeLevel < buttonsUpgradeLimit)
+       // if (buttonsUpgradeLevel < buttonsUpgradeLimit)
         {
-            buttonsUpgradeButton.interactable = true;
+       //     buttonsUpgradeButton.interactable = true;
         }
-        else if (buttonsUpgradeLevel == buttonsUpgradeLimit)
+       // else if (buttonsUpgradeLevel == buttonsUpgradeLimit)
         {
-            buttonsUpgradeButton.interactable = false;
+      //      buttonsUpgradeButton.interactable = false;
         }
 
 
@@ -101,11 +102,12 @@ public class UpgradeSystem : MonoBehaviour
     {
         if (levelPoints >= 1)
         {
-            levelPoints--;
+            
 
             for (playerDefenseUpgradeLevel = playerDefenseUpgradeLevel; playerDefenseUpgradeLevel
                 < playerDefenseIncreaseLimit; playerDefenseUpgradeLevel++)
             {
+                levelPoints--;
                 playerDefenseUpgrade?.Invoke();
                 playerDefenseUpgradeLevel++;
                 break;
@@ -135,11 +137,11 @@ public class UpgradeSystem : MonoBehaviour
     {
         if (levelPoints >= 1)
         {
-            levelPoints--;
+           
             for (playerSpeedUpgradeLevel = playerSpeedUpgradeLevel; playerSpeedUpgradeLevel
                 < playerSpeedIncreaseLimit; playerSpeedUpgradeLevel++)
             {
-               
+                levelPoints--;
                 playerSpeedUpgrade?.Invoke();
                 playerSpeedUpgradeLevel++;
                 break;

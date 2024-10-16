@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AmmoPickUp : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class AmmoPickUp : MonoBehaviour
     public Buttons lanceChargeButton;
     public PlayerHealth playerHealth;
     public LevellingSystem levellingSystem;
+    //public int id;
+
+    public static event Action<int> onPickUp;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +55,7 @@ public class AmmoPickUp : MonoBehaviour
                     break;
             }
 
+            //onPickUp?.Invoke(id);
             Destroy(gameObject);
         }
     }
