@@ -28,8 +28,6 @@ public class LanceCollison : MonoBehaviour
         int randomNumber = Random.Range(1, 100);
         int critChance = 77;
 
-        
-
         if (other.gameObject.CompareTag("Enemy"))
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
@@ -41,15 +39,7 @@ public class LanceCollison : MonoBehaviour
                     (checkForCriticalHit, lanceButton.buttonDamage, 2f);
                 damageable.ReceiveDamage(lanceCritDamage, lanceDamageType, checkForCriticalHit);
             }
-            effectable?.GiveStatusEffect();
-           
-            
-
-            
-           
+            effectable?.GiveStatusEffect();             
         }
-    }
-
-    
-    
+    }  
 }

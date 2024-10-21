@@ -218,8 +218,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
     }
 
     public IEnumerator EnemyDefenseDebuff()
-    {
-        
+    {      
         while(isEffected)
         {
             enemyDefense *= 0.5f;

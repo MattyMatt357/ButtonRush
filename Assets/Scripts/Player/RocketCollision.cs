@@ -54,11 +54,8 @@ public class RocketCollusion : MonoBehaviour
 
         if (other.gameObject.CompareTag("Enemy"))
         {
-            //IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            RocketDamage(other.contacts[0].point);
-            
+            RocketDamage(other.contacts[0].point);          
         }
-       // StartCoroutine(DeactivateGameobject(this.gameObject, 2f));
        this.gameObject.SetActive(false);
 
     }
@@ -72,19 +69,15 @@ public class RocketCollusion : MonoBehaviour
         int randomNumber = Random.Range(1, 100);
         int criticalChance = 77;
 
-       // float rocketDamage = 35f;
-
         Collider[] colliders = Physics.OverlapSphere(rocketPoint, 40f, enemyLayer);
         foreach (Collider collider in colliders) 
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
            
-
             if (collider.GetComponent<Rigidbody>() != null)
             {              
-                collider.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, rocketPoint, 10f, 0.5f, ForceMode.Impulse);
-
-                
+                collider.GetComponent<Rigidbody>().AddExplosionForce(explosionForce,
+                    rocketPoint, 10f, 0.5f, ForceMode.Impulse);                
             }
 
             if (damageable != null)

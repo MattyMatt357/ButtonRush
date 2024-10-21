@@ -61,9 +61,9 @@ public class EnemyHealthBar : MonoBehaviour
             // Quaternion enemyRotation = enemy.rotation;
             // enemyRotation.x = 0;
             //enemyRotation.z = 0;
-            float randomX = Random.Range(15, 25);
-            float randomY = Random.Range(15, 25);
-            float randomZ = Random.Range(15, 25);
+            float randomX = Random.Range(15, 30);
+            float randomY = Random.Range(15, 30);
+            float randomZ = Random.Range(15, 20);
             uiDamageTextObject = Instantiate(uiDamageTextPrefab,
                 enemy.position + new Vector3(randomX, randomY, randomZ), Quaternion.identity);
            damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
@@ -107,9 +107,9 @@ public class EnemyHealthBar : MonoBehaviour
     {
         if (uiDamageTextPrefab != null)
         {
-            float randomX = Random.Range(15,25);
-            float randomY = Random.Range(15, 25);
-            float randomZ = Random.Range(15, 25);
+            float randomX = Random.Range(15,30);
+            float randomY = Random.Range(15, 30);
+            float randomZ = Random.Range(15, 20);
             // Quaternion enemyRotation = enemy.rotation;
             // enemyRotation.x = 0;
             //enemyRotation.z = 0;
@@ -124,9 +124,9 @@ public class EnemyHealthBar : MonoBehaviour
 
     public void ShowStatusEffect(string statusEffect)
     {
-        float randomX = Random.Range(15, 25);
-        float randomY = Random.Range(15, 25);
-        float randomZ = Random.Range(15, 25);
+        float randomX = Random.Range(15, 30);
+        float randomY = Random.Range(15, 30);
+        float randomZ = Random.Range(15, 20);
         uiDamageTextObject = Instantiate(uiDamageTextPrefab,
             enemy.position + new Vector3(randomX, randomY, randomZ),
             Quaternion.identity);
