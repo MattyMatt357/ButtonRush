@@ -39,8 +39,9 @@ public class GameState
     public int[] enemyStates;
     public bool[] enemyPatrolling;
     public bool[] enemyChasing;
-    public static int enemyKills;
+    public int enemyKills;
     public bool[] enemyBeenAttacked;
+    public bool[] enemyDead;
     // public float[] enemyDefense;
     //public Buttons laserButton;
     // public Buttons lanceButton;
@@ -50,7 +51,9 @@ public class GameState
     public bool hasEnemyDebuffUpgrade;
     public bool enemyHasBeenAttacked;
 
-   // public Dictionary<int, Vector3> savedAmmoPickUpsPositions = new Dictionary<int, Vector3>();
+   // [Serializable]
+   
+    
     //public Dictionary<int, Quaternion> savedAmmoPickUpsRotations = new Dictionary<int, Quaternion>();
 }
 

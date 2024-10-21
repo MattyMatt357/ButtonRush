@@ -142,13 +142,7 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
     public GameObject FindClosestEnemy()
     {
        Vector3 position = transform.position;
-         //return GameObject.FindGameObjectsWithTag("Enemy").
-        // OrderBy(o => (o.transform.position-position).sqrMagnitude).FirstOrDefault();
-
-
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-      //  enemies[].sort
-           
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");              
         GameObject closestEnemy = null;
 
         float distance = 100000;
@@ -160,23 +154,10 @@ public class PlayerMovement : MonoBehaviour, PlayerInputActions.IPlayerActions
             {
                distance = distanceToEnemy;
                closestEnemy = enemy;
-            }
-           // Vector3 difference = enemy.transform.position - position;
-            //float distance2 = difference.sqrMagnitude;
-            //if(distance2 < distance && distance2 <= 100 && distance2 >= 1)
-           
-
-
-        }
-       // closestEnemy = enemies.OrderBy(go => (position- go.transform.position).sqrMagnitude).FirstOrDefault();
-
-       // if(closestEnemy != enemyToLockOn)
-        {
-           // enemyToLockOn= closestEnemy.transform;
-        }
+            }          
+        }     
         return closestEnemy;
 
-       // if (Physics.OverlapSphereNonAlloc(position, 100f, )
     }
 
     /// <summary>

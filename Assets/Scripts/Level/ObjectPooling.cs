@@ -8,6 +8,9 @@ public class ObjectPooling : MonoBehaviour
 
     public List<GameObject> pooledRockets = new List<GameObject>();
     public GameObject rockets;
+
+    public List<GameObject> pooledRocketExplosions = new List<GameObject>();
+    public GameObject rocketExplosions;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -19,18 +22,19 @@ public class ObjectPooling : MonoBehaviour
     }
     void Start()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 25; i++)
         {
             GameObject rocketsToPool = Instantiate(rockets);
             rocketsToPool.SetActive(false);
             pooledRockets.Add(rocketsToPool);
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        for (int i = 0; i < 25; i++)
+        {
+            GameObject explosionsToPool = Instantiate(rocketExplosions);
+            explosionsToPool.SetActive(false);
+            pooledRocketExplosions.Add(explosionsToPool);
+        }
     }
 
     public GameObject GetRocketFromPool()
@@ -40,11 +44,21 @@ public class ObjectPooling : MonoBehaviour
             if (!pooledRockets[i].gameObject.activeInHierarchy)
             {
                 return pooledRockets[i];
-               // StartCoroutine(DeactivateRocketAfter3Seconds(pooledRockets[i]));
             }
         }
-
         return null;
     }
-    
+
+    public GameObject GetRocketExplosionFromPool()
+    {
+        for (int i = 0; i < pooledRocketExplosions.Count; i++)
+        {
+            if (!pooledRocketExplosions[i].gameObject.activeInHierarchy)
+            {
+                return pooledRocketExplosions[i];
+            }
+        }
+        return null;
+    }
+
 }

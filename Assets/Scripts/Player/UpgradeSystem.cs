@@ -9,7 +9,6 @@ public class UpgradeSystem : MonoBehaviour
 {
     [Header("Upgrade Points And Limits")]
     public int levelPoints;
-    [FormerlySerializedAs("playerDefenseLimit")]
     public int playerDefenseIncreaseLimit;
     public int playerSpeedIncreaseLimit;
     public int playerDefenseUpgradeLevel;
@@ -34,6 +33,8 @@ public class UpgradeSystem : MonoBehaviour
     public static event Action playerSpeedUpgrade;
     public static event Action backToPauseMenu;
     public static event Action buttonsUpgrade;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,82 +51,32 @@ public class UpgradeSystem : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        // playerDefenseUpgradeButton
-        /*
-        if (playerDefenseUpgradeLevel < playerDefenseIncreaseLimit)
-        {
-            playerDefenseUpgradeButton.interactable = true;
-        }
-        else if(playerDefenseUpgradeLevel == playerDefenseIncreaseLimit)
-        {
-            playerDefenseUpgradeButton.interactable = false;
-            //playerDefenseUpgradeButton.Select();
-        }
-
-
-        if (playerSpeedUpgradeLevel < playerSpeedIncreaseLimit)
-        {
-            playerSpeedUpgradeButton.interactable = true;
-        }
-        else if (playerSpeedUpgradeLevel == playerSpeedIncreaseLimit)
-        {
-            playerSpeedUpgradeButton.interactable = false;
-        }
-
-        if (hasEnemyDebuffUpgrade == false)
-        {
-            enemyDefenseDebuffToggle.interactable = true;
-        } */
-     //   else if (hasEnemyDebuffUpgrade == true)
-        {
-      //      enemyDefenseDebuffToggle.interactable = false;
-        }
-
-       
+    {     
         levelPoints = Mathf.Clamp(levelPoints, 0, 15);
-
-
-       // if (buttonsUpgradeLevel < buttonsUpgradeLimit)
-        {
-       //     buttonsUpgradeButton.interactable = true;
-        }
-       // else if (buttonsUpgradeLevel == buttonsUpgradeLimit)
-        {
-      //      buttonsUpgradeButton.interactable = false;
-        }
-
-
     }
 
     public void PlayerDefenseIncrease()
     {
-        if (levelPoints >= 1)
-        {
-            
+        if (levelPoints >= 1 && playerDefenseUpgradeLevel < playerDefenseIncreaseLimit)
+        {                           
+            levelPoints--;
+            playerDefenseUpgrade?.Invoke();
+            playerDefenseUpgradeLevel++;
 
-            for (playerDefenseUpgradeLevel = playerDefenseUpgradeLevel; playerDefenseUpgradeLevel
-                < playerDefenseIncreaseLimit; playerDefenseUpgradeLevel++)
-            {
-                levelPoints--;
-                playerDefenseUpgrade?.Invoke();
-                playerDefenseUpgradeLevel++;
-                break;
-            }
-        }
-
-         
+        }        
     }
 
     public void EnableLowEnemyDefenseEffect(bool hasDebuffUpgrade)
     {
-        if (levelPoints >= 2)
+        if(hasEnemyDebuffUpgrade == false)
         {
-            levelPoints -= 2;
-            hasEnemyDebuffUpgrade = hasDebuffUpgrade;
-            enemyLowDefenseEffectUpgrade?.Invoke(hasEnemyDebuffUpgrade);
+            if (levelPoints >= 2)
+            {
+                levelPoints -= 2;
+                hasEnemyDebuffUpgrade = hasDebuffUpgrade;
+                enemyLowDefenseEffectUpgrade?.Invoke(hasEnemyDebuffUpgrade);
+            }
         }
-       
     }
 
     public void ObtainLevelPoints()
@@ -135,21 +86,12 @@ public class UpgradeSystem : MonoBehaviour
 
     public void PlayerSpeedIncrease()
     {
-        if (levelPoints >= 1)
+        if (levelPoints >= 1 && playerSpeedUpgradeLevel < playerSpeedIncreaseLimit)
         {
-           
-            for (playerSpeedUpgradeLevel = playerSpeedUpgradeLevel; playerSpeedUpgradeLevel
-                < playerSpeedIncreaseLimit; playerSpeedUpgradeLevel++)
-            {
-                levelPoints--;
-                playerSpeedUpgrade?.Invoke();
-                playerSpeedUpgradeLevel++;
-                break;
-
-            }
-        }
-
-        
+            levelPoints--;
+            playerSpeedUpgrade?.Invoke();
+            playerSpeedUpgradeLevel++;
+        }      
     }
 
     public void BackToPauseMenu()
@@ -159,21 +101,12 @@ public class UpgradeSystem : MonoBehaviour
 
     public void UpgradeButtons()
     {
-        if (levelPoints >= 1)
+        if (levelPoints >= 1 && buttonsUpgradeLevel < buttonsUpgradeLimit)
         {
             levelPoints--;
-            for (buttonsUpgradeLevel = buttonsUpgradeLevel; buttonsUpgradeLevel
-                < buttonsUpgradeLimit; buttonsUpgradeLevel++)
-            {
-                buttonsUpgrade?.Invoke();
-                buttonsUpgradeLevel++;
-                break;
-
-            }
+            buttonsUpgrade?.Invoke();
+            buttonsUpgradeLevel++;
         }
-
-       
-
     }
 
     public void OnEnable()

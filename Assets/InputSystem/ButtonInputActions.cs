@@ -68,7 +68,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cf5f0c36-d911-4204-84dd-0500e7882682"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -112,7 +112,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c0e77eae-c483-49fa-884f-2b7582af0c40"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -156,7 +156,7 @@ public partial class @ButtonInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""09ecca4e-16c0-4f0e-8740-a5d4d0cca8ec"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

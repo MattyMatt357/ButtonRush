@@ -61,17 +61,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
     // Update is called once per frame
     void Update()
     {
-        if (enemyAI.enemyState == EnemyAI.EnemyState.Death)
-        {
-            //StartCoroutine(EnemyDeathCooldown());
-        }
+        
 
-        if (canDamage)
+        //if (canDamage)
         {
-            if (enemyHealth <= 0)
-            {
-                EnemyDeath();
-            }
+            
         }
     }
 
@@ -83,7 +77,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
             Debug.Log(enemyHealth);
             enemyHealthBar.EnemyHealthBarDisplay(enemyHealth, maxEnemyHealth);
             enemyHealthBar.EnemyDamageTextDisplay(damage, transform);
-
+            if (enemyHealth <= 0)
+            {
+                EnemyDeath();
+            }
         }
     }
     /// <summary>
@@ -118,15 +115,18 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
             {
                 case (StatusEffect.Frozen):
                     StartCoroutine(Frozen());
+                    enemyHealthBar.ShowStatusEffect("Frozen");
                     break;
                 case (StatusEffect.Poison):
                     StartCoroutine(Poisoned());
+                    enemyHealthBar.ShowStatusEffect("Poisoned");
                     break;
             }
 
-            if (isLowDefenseUpgradeOn)
+            if (isLowDefenseUpgradeOn && statusEffect == StatusEffect.DefenseDebuff)
             {
                 StartCoroutine(EnemyDefenseDebuff());
+                enemyHealthBar.ShowStatusEffect("Low Defense");
             }
 
 
@@ -204,8 +204,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IEffectable
                 enemyHealthBar.EnemyDamageTextDisplay
                 (damageTypes.CalculateButtonDamageResistance
                 (damage, buttonDamageType), damageTypes, buttonDamageType, isCritHit);
-            
-      }
+            if (enemyHealth <= 0)
+            {
+                EnemyDeath();
+            }
+
+        }
     }
 
     public void EnemyLowDefenseEffectUpgrade(bool enemyDefenseDebuffUpgradeOn)

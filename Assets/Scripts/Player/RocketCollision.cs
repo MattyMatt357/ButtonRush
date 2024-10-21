@@ -15,13 +15,15 @@ public class RocketCollusion : MonoBehaviour
     public ButtonDamageType rocketDamageType;
     public Rigidbody rocketRigidbody;
     public Transform rocketSpawn;
-   // private Collider rocketCollider;
+    // private Collider rocketCollider;
+    public ObjectPooling objectPooling;
     void Start()
     {
        // player = GameObject.Find("Player").GetComponent<Collider>();
        // rocketCollider = this.GetComponent<Collider>();
        rocketRigidbody = GetComponent<Rigidbody>();
         rocketSpawn = GameObject.Find("RocketSpawn").transform;
+        objectPooling = ObjectPooling.instance;
     }
 
     // Update is called once per frame
@@ -40,14 +42,24 @@ public class RocketCollusion : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-       
+        GameObject rocketExplosions = objectPooling.GetRocketExplosionFromPool();
+        if (rocketExplosions != null && this.gameObject.activeSelf == true)
+        {
+            rocketExplosions.transform.position = transform.position;
+            rocketExplosions.transform.rotation = transform.rotation;
+            rocketExplosions.SetActive(true);
+            StartCoroutine(DeactivateGameobject(rocketExplosions, 0.5f));
+
+        }
+
         if (other.gameObject.CompareTag("Enemy"))
         {
             //IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             RocketDamage(other.contacts[0].point);
             
         }
-       gameObject.SetActive(false);
+       // StartCoroutine(DeactivateGameobject(this.gameObject, 2f));
+       this.gameObject.SetActive(false);
 
     }
 
@@ -89,5 +101,11 @@ public class RocketCollusion : MonoBehaviour
         }
     }
 
-   
+    public IEnumerator DeactivateGameobject(GameObject gameObject, float timeToDeactivate)
+    {
+        yield return new WaitForSeconds(timeToDeactivate);
+        gameObject.SetActive(false);
+    }
+
+
 }

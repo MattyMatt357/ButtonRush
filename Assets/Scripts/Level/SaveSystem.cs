@@ -19,6 +19,10 @@ public class SaveSystem : MonoBehaviour
     public Transform playerCamera;
 
     public LevellingSystem levellingSystem;
+    public UpgradeSystem upgradeSystem;
+    public ButtonUiDisplay buttonUiDisplay;
+    public GameFinished gameFinished;
+    public PlayerMovement playerMovement;
 
 
 
@@ -40,13 +44,9 @@ public class SaveSystem : MonoBehaviour
     public static event DeactivateMenus deactivateMenus;
     public static event Action<int, int> onLoadCameraPriority;
     //public GameFinished gameFinished;
+  
 
-    public UpgradeSystem upgradeSystem;
-    public ButtonUiDisplay buttonUiDisplay;
-    public GameFinished gameFinished;
-    public PlayerMovement playerMovement;
-
-  //  public AmmoPickUp[] ammoPickUpsArray;
+    //public AmmoPickUp[] ammoPickUpsArray;
     //public GameObject ammmoPickUpsPrefab;
     
     //public List<AmmoPickUp> ammoPickUps = new List<AmmoPickUp>();
@@ -141,41 +141,43 @@ public class SaveSystem : MonoBehaviour
             gameState.enemyHealth[i] = enemyHealth[i].enemyHealth;
             gameState.enemyPosition[i] = enemies[i].transform.position;
             gameState.enemyRotation[i] = enemies[i].transform.rotation;
+            gameState.enemyDead[i] = enemyAIs[i].enemyDead;
             gameState.enemyStates[i] = (int)enemyAIs[i].enemyState;
+
             gameState.enemyPatrolling[i] = enemyAIs[i].isPatrolling;
             gameState.enemyChasing[i] = enemyAIs[i].isChasing;
             gameState.enemyBeenAttacked[i] = enemyAIs[i].hasBeenAttacked;
         }
-        GameState.enemyKills = gameFinished.enemyKills;
+        gameState.enemyKills = gameFinished.enemyKills;
         gameState.levelPoints = upgradeSystem.levelPoints;
         gameState.hasEnemyDebuffUpgrade = upgradeSystem.hasEnemyDebuffUpgrade;
         //gameState.hasEnemyDebuffUpgrade = EnemyHealth.isLowDefenseUpgradeOn;
 
         //Looks for ammo pick ups
-       // ammoPickUpsArray = FindObjectsOfType<AmmoPickUp>();
+        // ammoPickUpsArray = FindObjectsOfType<AmmoPickUp>();
         //ammoPickUps.
-      /*  for (int j = 0; j < ammoPickUpsArray.Length; j++)
-        {
-            ammoPickUps.Clear();
-            ammoPickUps.Add(ammoPickUpsArray[j]);
-        }
+        /*  for (int j = 0; j < ammoPickUpsArray.Length; j++)
+          {
+              ammoPickUps.Clear();
+              ammoPickUps.Add(ammoPickUpsArray[j]);
+          }
 
-        if (ammoPickUps != null)
-        {
-            gameState.savedAmmoPickUpsPositions.Clear();
-            gameState.savedAmmoPickUpsRotations.Clear();
+          if (ammoPickUps != null)
+          {
+              gameState.savedAmmoPickUpsPositions.Clear();
+              gameState.savedAmmoPickUpsRotations.Clear();
 
-            for (int i = 0; i < ammoPickUpsArray.Length; i++)
-            {
-                gameState.savedAmmoPickUpsPositions.Add(i, ammoPickUps[i].gameObject.transform.position);
-                gameState.savedAmmoPickUpsRotations.Add(i, ammoPickUps[i].gameObject.transform.rotation);
-            }
-      
-            }
-                 */
+              for (int i = 0; i < ammoPickUpsArray.Length; i++)
+              {
+                  gameState.savedAmmoPickUpsPositions.Add(i, ammoPickUps[i].gameObject.transform.position);
+                  gameState.savedAmmoPickUpsRotations.Add(i, ammoPickUps[i].gameObject.transform.rotation);
+              }
 
+              }
+                   */
+       
         
-
+       
 
 
 
@@ -219,39 +221,43 @@ public class SaveSystem : MonoBehaviour
         savingSystem.LoadJson(rocketLauncherButton, "/RocketData");
         savingSystem.LoadJson(lanceChargeButton, "/lanceButtonData");
         savingSystem.LoadJson(shieldButton, "/ShieldButtonData");
+
+        gameFinished.enemyKills = gameState.enemyKills;
         //Enemies
         for (int i = 0; i < enemies.Length; i++)
         {
+            enemyAIs[i].enemyState = (EnemyAI.EnemyState)gameState.enemyStates[i];
             enemyHealth[i].enemyHealth = gameState.enemyHealth[i];
             enemies[i].transform.position = gameState.enemyPosition[i];
             enemies[i].transform.rotation = gameState.enemyRotation[i];
-            enemyAIs[i].enemyState = (EnemyAI.EnemyState)gameState.enemyStates[i];
+            enemyAIs[i].enemyDead = gameState.enemyDead[i];
+            
             enemyAIs[i].isPatrolling = gameState.enemyPatrolling[i];
             enemyAIs[i].isChasing = gameState.enemyChasing[i];
             enemyAIs[i].hasBeenAttacked = gameState.enemyBeenAttacked[i];
         }
-        gameFinished.enemyKills = GameState.enemyKills;
+        
 
         upgradeSystem.hasEnemyDebuffUpgrade = gameState.hasEnemyDebuffUpgrade;
         EnemyHealth.isLowDefenseUpgradeOn = gameState.hasEnemyDebuffUpgrade;
         buttonUiDisplay.timeRemaining = gameState.timeRemaining;
         deactivateMenus?.Invoke();
 
-      /*  ammoPickUpsArray = FindObjectsOfType<AmmoPickUp>();
-        if (ammoPickUps != null)
-        {
-            for (int i = 0; i < ammoPickUpsArray.Length; i++)
-            {
-                Destroy(ammoPickUpsArray[i].gameObject);
-            }
-        }
+        /*  ammoPickUpsArray = FindObjectsOfType<AmmoPickUp>();
+          if (ammoPickUps != null)
+          {
+              for (int i = 0; i < ammoPickUpsArray.Length; i++)
+              {
+                  Destroy(ammoPickUpsArray[i].gameObject);
+              }
+          }
 
-        for (int i = 0; i < gameState.savedAmmoPickUpsPositions.Count; i++)
-        {
-            Instantiate(ammmoPickUpsPrefab, gameState.savedAmmoPickUpsPositions[i], gameState.savedAmmoPickUpsRotations[i]);
-        } */
+          for (int i = 0; i < gameState.savedAmmoPickUpsPositions.Count; i++)
+          {
+              Instantiate(ammmoPickUpsPrefab, gameState.savedAmmoPickUpsPositions[i], gameState.savedAmmoPickUpsRotations[i]);
+          } */
 
-        onLoadCameraPriority?.Invoke(10, 2);
+       
 
 
     }

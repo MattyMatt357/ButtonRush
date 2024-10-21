@@ -41,15 +41,15 @@ public class ButtonDamageTypes: ScriptableObject
 }
 public enum ButtonDamageType
 {
-    Rocket,
-    Laser,
-    Lance
+    Rocket = 0,
+    Laser = 1,
+    Lance= 2
 }
 
 //WeaknessAndResistances
 public enum ButtonResistances
 { 
-    Weak,
-    Neutral,
-    Resist
+    Weak = 0,
+    Neutral = 1,
+    Resist = 2
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+//using System;
 
 public class EnemyHealthBar : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class EnemyHealthBar : MonoBehaviour
     {
         if (uiDamageTextObject != null)
         {
-            Vector3 cameraRotation = new Vector3(0, camera.transform.position.y,0);
+            //Vector3 cameraRotation = new Vector3(0, camera.transform.position.y,0);
            // uiDamageTextObject.transform.rotation = camera.transform.rotation;
                 
           //Quaternion.LookRotation((uiDamageTextObject.transform.position - camera.transform.position).normalized);
@@ -61,9 +62,10 @@ public class EnemyHealthBar : MonoBehaviour
             // enemyRotation.x = 0;
             //enemyRotation.z = 0;
             float randomX = Random.Range(15, 25);
-            float randomY = Random.Range(25, 35);
+            float randomY = Random.Range(15, 25);
+            float randomZ = Random.Range(15, 25);
             uiDamageTextObject = Instantiate(uiDamageTextPrefab,
-                enemy.position + new Vector3(randomX, randomY, 0), Quaternion.identity);
+                enemy.position + new Vector3(randomX, randomY, randomZ), Quaternion.identity);
            damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
 
             for (int i = 0; i< buttonDamageTypes.weaknessesAndResistances.Count; i++) 
@@ -93,9 +95,7 @@ public class EnemyHealthBar : MonoBehaviour
                 }
 
 
-            }
-           // if(buttonDamageTypes.weaknessesAndResistances)
-           
+            }          
         }
         
        
@@ -109,16 +109,32 @@ public class EnemyHealthBar : MonoBehaviour
         {
             float randomX = Random.Range(15,25);
             float randomY = Random.Range(15, 25);
+            float randomZ = Random.Range(15, 25);
             // Quaternion enemyRotation = enemy.rotation;
             // enemyRotation.x = 0;
             //enemyRotation.z = 0;
             uiDamageTextObject = Instantiate(uiDamageTextPrefab,
-                enemy.position + new Vector3(randomX, randomY, 0), Quaternion.identity);
+                enemy.position + new Vector3(randomX, randomY, randomZ), Quaternion.identity);
             damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
 
            
             damageText.text = damageToShow.ToString("F0");
         }
+    }
+
+    public void ShowStatusEffect(string statusEffect)
+    {
+        float randomX = Random.Range(15, 25);
+        float randomY = Random.Range(15, 25);
+        float randomZ = Random.Range(15, 25);
+        uiDamageTextObject = Instantiate(uiDamageTextPrefab,
+            enemy.position + new Vector3(randomX, randomY, randomZ),
+            Quaternion.identity);
+
+        damageText = uiDamageTextObject.GetComponent<TextMeshPro>();
+
+
+        damageText.text = statusEffect;
     }
 }
 

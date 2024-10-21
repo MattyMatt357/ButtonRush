@@ -58,13 +58,20 @@ public class Buttons : ScriptableObject
         return button;
     }
 
-  /* public static implicit operator Buttons(float floatToConvert)
-    {
-        Buttons button = CreateInstance<Buttons>();
-        button.SetDamageForOperator(floatToConvert);
-        return button;
-    }*/
+    /* public static implicit operator Buttons(float floatToConvert)
+      {
+          Buttons button = CreateInstance<Buttons>();
+          button.SetDamageForOperator(floatToConvert);
+          return button;
+      }*/
 
+    /// <summary>
+    /// Automatically increases the max ammo of the button by 5 and
+    /// increases the damage of the button by the specified float
+    /// </summary>
+    /// <param name="button"></param>
+    /// <param name="damage"></param>
+    /// <returns></returns>
     public static Buttons operator +(Buttons button, float damage)
     {
         button.buttonDamage += damage;
@@ -72,6 +79,13 @@ public class Buttons : ScriptableObject
         return button;
     }
 
+    /// <summary>
+    /// Automatically increases the damage of the button by 5 and
+    /// increases the max energy of the button by the specified float
+    /// </summary>
+    /// <param name="button"></param>
+    /// <param name="damage"></param>
+    /// <returns></returns>
     public static Buttons operator ^(Buttons button, float buttonMaxEnergy)
     {
         button.maxEnergy += buttonMaxEnergy;

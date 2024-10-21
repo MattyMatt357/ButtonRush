@@ -131,20 +131,17 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
            // if (Physics.Raycast(laserStartPoint.position, laserStartPoint.forward, out hit, laserRange))
                 if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
                 {
-                
-                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+                    lineRenderer.SetPosition(1, hit.point);
+                    IDamageable damageable = hit.collider.GetComponent<IDamageable>();
 
 
-                if (damageable != null)
-                {
-                    damageable.ReceiveDamage(laserButton.buttonDamage * Time.deltaTime, laserDamageType, false);
+                    if (damageable != null)
+                    {
+                     damageable.ReceiveDamage(laserButton.buttonDamage
+                         * Time.deltaTime, laserDamageType, false);
+                    }
+               
                 }
-               // else if (damageable == null)
-                {
-                   // dealingLaserDamage = false;
-                }
-
-            }
 
             else
             {
@@ -276,9 +273,9 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 RaycastHit hit;
 
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, laserRange))
+                    if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
                     {
-                    lineRenderer.SetPosition(1, hit.point);
+                    
 
 
 
@@ -336,7 +333,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
     public IEnumerator LaserCooldown()
     {
         lineRenderer.enabled = false;
-        GetComponent<ParticleSystem>().Stop();
+
         yield return new WaitForSeconds(laserCooldownTime);
         lineRenderer.enabled = true;
         laserButton.currentEnergy = laserButton.maxEnergy;
@@ -385,13 +382,12 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
 
     public void IncreaseButtonStats()
     {
-        //Increasing button damage and max ammo/energy       
+        //Increasing button damage and max energy       
         shieldButton ^= 10;
         laserButton ^= 50f;
-        // Increasing button damage
+        // Increasing button damage and max ammo
         lanceButton += 10;
-        rocketLauncherButton += 5;
-       // laserButton += 5         
+        rocketLauncherButton += 5;    
     }
 
     public IEnumerator DeactivateRocketAfter12Seconds(GameObject rocket)

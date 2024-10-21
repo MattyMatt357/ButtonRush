@@ -60,11 +60,13 @@ public class EnemyAI : MonoBehaviour
         
        // enemyTransfrom = GameObject.Find("oritentation").transform;
        enemyHealth = GetComponent<EnemyHealth>();
-        enemyDead = false;
+
+       
         gameObject.SetActive(true);
 
         if(MainMenuOptions.isLoadedGame == false)
         {
+            enemyDead = false;
             isPatrolling = true;
             hasBeenAttacked = false;
             isChasing=false;
@@ -84,12 +86,17 @@ public class EnemyAI : MonoBehaviour
         {
             isPatrolling = true;
             isChasing = false;
-            hasBeenAttacked = false;
+            //hasBeenAttacked = false;
             if (isPatrolling && !isChasing)
             {
                 enemyState = EnemyState.Patrolling;
             }
-           
+    
+        }
+        else if (!playerInSightRange && !playerInAttackRange && hasBeenAttacked == true)
+        {
+            enemyState=EnemyState.Chasing;
+            isChasing = true;
         }
 
         if (playerInSightRange && !playerInAttackRange && !isChasing)
@@ -98,8 +105,14 @@ public class EnemyAI : MonoBehaviour
             enemyState = EnemyState.Detecting;
         }
 
-        if (playerInSightRange && !playerInAttackRange && isChasing || hasBeenAttacked == true) 
+        if (playerInSightRange && !playerInAttackRange && isChasing) 
         {
+            enemyState = EnemyState.Chasing;
+        }
+
+        if (hasBeenAttacked == true)
+        {
+            isChasing = true;
             enemyState = EnemyState.Chasing;
         }
 
@@ -260,7 +273,6 @@ public class EnemyAI : MonoBehaviour
     }
     public void ResetAttack()
     {
-       // animator.SetTrigger("IsAttacking");
         enemyAttacking = false;
     }
 
