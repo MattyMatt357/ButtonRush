@@ -53,6 +53,11 @@ public class UpgradeSystem : MonoBehaviour
     void Update()
     {     
         levelPoints = Mathf.Clamp(levelPoints, 0, 15);
+
+        if(hasEnemyDebuffUpgrade == true)
+        {
+            enemyDefenseDebuffToggle.isOn = true;
+        }
     }
 
     public void PlayerDefenseIncrease()

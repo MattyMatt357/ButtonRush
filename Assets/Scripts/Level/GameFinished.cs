@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class GameFinished : MonoBehaviour
 {
-    public delegate void GameFinishedCallback();
-    public static event GameFinishedCallback GameFinish;
-    public delegate void GameOverWrongKills();
-    public static event GameOverWrongKills GameOverWrongEnemyKills;
-    public  int enemyKills;
+    public static event Action GameFinish;
+    public static event Action GameOverWrongEnemyKills;
+    public int enemyKills;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +25,7 @@ public class GameFinished : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+      
     }
 
 
@@ -44,9 +43,7 @@ public class GameFinished : MonoBehaviour
             {
                 GameOverWrongEnemyKills?.Invoke();
             }
-        } 
-
-        
+        }       
     }
 
 

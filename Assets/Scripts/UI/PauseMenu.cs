@@ -136,8 +136,9 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuDisplayed = true;
         DisplayingPauseMenu();
-        gameOverScreen.SetActive(true);
         pauseMenu.SetActive(false);
+        gameOverScreen.SetActive(true);
+        PlayerMovement.displayPauseMenu -= SwitchingPauseMenu;
         GameOverScreenLoadButton.Select();
     }
 
@@ -149,6 +150,7 @@ public class PauseMenu : MonoBehaviour
         //SaveGameButton.gameObject.SetActive(false);
         
         gameFinishedScreen.SetActive(true);
+        PlayerMovement.displayPauseMenu -= SwitchingPauseMenu;
         GameFinishedGoToMainMenuButton.Select();
     }
 

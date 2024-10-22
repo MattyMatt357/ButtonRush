@@ -131,17 +131,22 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
                 {
                     lineRenderer.SetPosition(1, hit.point);
+                    //ray.direction = lineRenderer.GetPosition(1);
                     IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                     if (damageable != null)
                     {
-                     damageable.ReceiveDamage(laserButton.buttonDamage
-                         * Time.deltaTime, laserDamageType, false);
-                    }             
+                     damageable.ReceiveDamage((laserButton.buttonDamage
+                         * Time.deltaTime) /2, laserDamageType, false);
+                    } 
+                    else if (damageable == null)
+                        {
+                    dealingLaserDamage = false;
+                           }
                 }
 
             else
             {
-                dealingLaserDamage = false;
+                
             }
         }
 
@@ -211,7 +216,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 if (rockets != null)
                 {
                     rockets.transform.position = RocketLauncherRocketSpawn.position;
-                    rockets.transform.rotation = Quaternion.LookRotation(rayHit.origin);
+                    rockets.transform.rotation = Quaternion.LookRotation(ray.origin);
                     rockets.SetActive(true);
                     StartCoroutine(DeactivateRocketAfter12Seconds(rockets));
 
@@ -259,38 +264,24 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
             {
                 isLaserButtonHeld = true;
 
-
                 lineRenderer.enabled = true;
                 Debug.Log("firingMyLaser!");
-
                 
-
-                lineRenderer.SetPosition(0, laserStartPoint.position);
                 RaycastHit hit;
 
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
-                    {
-                    
-
-
-
+               // lineRenderer.SetPosition(0, ray.origin);
+                if (Physics.Raycast(ray, out hit, laserRange, enemyLayer))
+                {
                     IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-
 
                     if (damageable != null)
                     {
-                        //damageable.ReceiveDamage(2f * Time.deltaTime);
                         dealingLaserDamage = true;
                     }
-
-
-
                 }
-
                 else
                 {
-
                     lineRenderer.SetPosition(1, ray.origin + (ray.direction * laserRange));
                     dealingLaserDamage = false;
                 }
@@ -302,7 +293,6 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                 lineRenderer.enabled = false;
                 dealingLaserDamage = false;
                 lineRenderer.SetPosition(1, laserStartPoint.position);
-               // GetComponent<ParticleSystem>().Stop();
             }
         }
        

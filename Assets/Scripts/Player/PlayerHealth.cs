@@ -30,10 +30,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if (currentPlayerHealth <= 0)
-        {
-            playerDefeat?.Invoke();
-        }
+        
 
         
     }
@@ -44,7 +41,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             currentPlayerHealth -= damage * (100/(100+playerDefense));
         }
-        
+
+        if (currentPlayerHealth <= 0)
+        {
+            playerDefeat?.Invoke();
+        }
+
     }
 
     public void OnEnable()
@@ -60,7 +62,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void PlayerIncreaseHealth()
     {
-        maxPlayerHealth *= 1.15f;
+        maxPlayerHealth *= 1.2f;
         currentPlayerHealth = maxPlayerHealth;
     }
 
