@@ -136,7 +136,7 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
                     if (damageable != null)
                     {
                      damageable.ReceiveDamage((laserButton.buttonDamage
-                         * Time.deltaTime) /2, laserDamageType, false);
+                         * Time.deltaTime) * 5, laserDamageType, false);
                     } 
                     else if (damageable == null)
                         {
@@ -167,16 +167,6 @@ public class PlayerButtonInputs : MonoBehaviour, ButtonInputActions.IButtonsActi
         rocketLauncherButton.currentAmmo = Mathf.Clamp(rocketLauncherButton.currentAmmo, 0, rocketLauncherButton.maxAmmo);
         lanceButton.currentAmmo = Mathf.Clamp(lanceButton.currentAmmo, 0, lanceButton.maxAmmo);
 
-       /* if (Input.GetKeyDown(KeyCode.Return))
-        { 
-            rocketLauncherButton.currentAmmo = rocketLauncherButton.maxAmmo;
-            laserButton.currentEnergy = laserButton.maxEnergy;
-            shieldButton.currentEnergy = shieldButton.maxEnergy;
-            lanceButton.currentAmmo = lanceButton.maxAmmo;
-        } */
-
-        //rocketLauncher.transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-        //player.transform.rotation = 
 
         switch (equippedButton)
         {
