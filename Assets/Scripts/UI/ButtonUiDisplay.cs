@@ -85,10 +85,6 @@ public class ButtonUiDisplay : MonoBehaviour
         DisplayPlayerUpgradeStats(playerSpeedText, playerMovement.playerSpeed, "Player Speed: ");
         DisplayPlayerUpgradeStats(levelPointsText, upgradeSystem.levelPoints, "Level Points: ");
 
-        if (Input.GetKey(KeyCode.L))
-        {
-            timeRemaining = 10f;
-        }
         
     }
 
